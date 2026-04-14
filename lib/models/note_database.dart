@@ -1,61 +1,50 @@
+import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
-import '../models/note.dart';
+import '../models/app_database.dart';
 
-// PROVIDER
+// Database provider
+final databaseProvider = Provider<AppDatabase>((ref) {
+  final db = AppDatabase();
+  ref.onDispose(() => db.close());
+  return db;
+});
+
+// Notes provider — Note type comes from generated code
 final noteProvider = StateNotifierProvider<NoteNotifier, List<Note>>((ref) {
-  return NoteNotifier();
+  final db = ref.watch(databaseProvider);
+  return NoteNotifier(db);
 });
 
 class NoteNotifier extends StateNotifier<List<Note>> {
-  NoteNotifier() : super([]) {
-    initialize(); // load data when created
-  }
+  final AppDatabase db;
 
-  late Isar isar;
-
-  // Initialize DB
-  Future<void> initialize() async {
-    final dir = await getApplicationCacheDirectory();
-    isar = await Isar.open([NoteSchema], directory: dir.path);
-
-    await fetchNotes();
+  NoteNotifier(this.db) : super([]) {
+    fetchNotes();
   }
 
   // READ
   Future<void> fetchNotes() async {
-    final fetchedNotes = await isar.notes.where().findAll();
-    state =
-        fetchedNotes; // 🔥 notifyListeners equivalent//finds all the value and sets to the notes
+    final fetchedNotes = await db.select(db.notes).get();
+    state = fetchedNotes;
   }
 
   // CREATE
-  Future<void> addNote(String text) async {
-    final newNote = Note()..text = text;
-
-    await isar.writeTxn(() => isar.notes.put(newNote));
-
-    await fetchNotes(); // refresh state
+  Future<void> addNote(String noteText) async {
+    await db.into(db.notes).insert(NotesCompanion.insert(noteText: noteText));
+    await fetchNotes();
   }
 
   // UPDATE
   Future<void> updateNote(int id, String newText) async {
-    final note = await isar.notes.get(id);
-
-    if (note != null) {
-      note.text = newText;
-
-      await isar.writeTxn(() => isar.notes.put(note));
-
-      await fetchNotes();
-    }
+    await (db.update(db.notes)..where((t) => t.id.equals(id))).write(
+      NotesCompanion(noteText: Value(newText)),
+    );
+    await fetchNotes();
   }
 
   // DELETE
   Future<void> deleteNote(int id) async {
-    await isar.writeTxn(() => isar.notes.delete(id));
-
+    await (db.delete(db.notes)..where((t) => t.id.equals(id))).go();
     await fetchNotes();
   }
 }

@@ -1,10 +1,7 @@
-import 'package:isar/isar.dart';
+import 'package:drift/drift.dart';
 
-part 'note.g.dart';
-
-@collection
-class Note {
-  Id id = Isar.autoIncrement; // you can also use id = null to auto increment
-
-  late String? text;
+// This defines the table schema for Drift
+class Notes extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get noteText => text()();
 }

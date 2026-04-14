@@ -210,13 +210,13 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                     itemCount: notes.length,
                     itemBuilder: (BuildContext context, int index) {
                       return NoteTile(
-                        text: notes[index].text!,
+                        text: notes[index].noteText,
                         onEditPressed: () {
-                          onEditPressed(notes[index].id, notes[index].text!);
+                          onEditPressed(notes[index].id, notes[index].noteText);
                         },
                         onDeletePressed: () => onDeletePressed(
                           notes[index].id,
-                          notes[index].text!,
+                          notes[index].noteText,
                         ),
                       );
                     },
