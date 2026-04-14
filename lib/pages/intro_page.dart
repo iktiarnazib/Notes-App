@@ -23,7 +23,7 @@ class IntroPage extends StatelessWidget {
             //title
             FittedBox(
               child: Text(
-                'Aishi Notes',
+                'Clean Notes',
                 style: GoogleFonts.dmSerifText(
                   fontSize: 24,
                   fontWeight: FontWeight.w600,

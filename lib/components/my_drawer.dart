@@ -20,7 +20,7 @@ class MyDrawer extends StatelessWidget {
             ),
           ),
           Text(
-            'Notes',
+            'Clean Notes',
             style: GoogleFonts.dmSerifText(
               fontSize: 30,
               color: Theme.of(context).colorScheme.inversePrimary,
