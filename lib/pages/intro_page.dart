@@ -24,7 +24,8 @@ class IntroPage extends StatelessWidget {
             FittedBox(
               child: Text(
                 'Clean Notes',
-                style: GoogleFonts.dmSerifText(
+                style: TextStyle(
+                  fontFamily: "DMSerifText",
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
                   color: Theme.of(context).colorScheme.inversePrimary,
@@ -36,7 +37,8 @@ class IntroPage extends StatelessWidget {
             FittedBox(
               child: Text(
                 'Remember what you do everyday',
-                style: GoogleFonts.dmSerifText(
+                style: TextStyle(
+                  fontFamily: "DMSerifText",
                   color: Theme.of(context).colorScheme.inversePrimary,
                   fontSize: 15,
                 ),

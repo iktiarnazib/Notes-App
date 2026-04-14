@@ -173,7 +173,8 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                   padding: const EdgeInsets.only(left: 25.0),
                   child: Text(
                     'Notes',
-                    style: GoogleFonts.dmSerifText(
+                    style: TextStyle(
+                      fontFamily: "DMSerifText",
                       fontSize: 48,
                       color: Theme.of(context).colorScheme.inversePrimary,
                     ),
@@ -183,7 +184,8 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                   child: Center(
                     child: Text(
                       'Try adding a note...',
-                      style: GoogleFonts.dmSerifText(
+                      style: TextStyle(
+                        fontFamily: "DMSerifText",
                         fontSize: 16,
                         color: Theme.of(context).colorScheme.inversePrimary,
                       ),
@@ -199,7 +201,8 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                   padding: const EdgeInsets.only(left: 25.0),
                   child: Text(
                     'Notes',
-                    style: GoogleFonts.dmSerifText(
+                    style: TextStyle(
+                      fontFamily: "DMSerifText",
                       fontSize: 48,
                       color: Theme.of(context).colorScheme.inversePrimary,
                     ),

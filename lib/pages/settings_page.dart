@@ -24,7 +24,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Settings', style: GoogleFonts.dmSerifText())),
+      appBar: AppBar(
+        title: Text('Settings', style: TextStyle(fontFamily: "DMSerifText")),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
 
@@ -41,7 +43,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 padding: const EdgeInsets.only(left: 16.0),
                 child: Text(
                   'Dark Mode',
-                  style: GoogleFonts.dmSerifText(
+                  style: TextStyle(
+                    fontFamily: "DMSerifText",
                     color: Theme.of(context).colorScheme.inversePrimary,
                     fontSize: 16,
                   ),

@@ -23,7 +23,7 @@ class NoteTile extends StatelessWidget {
       ),
       margin: EdgeInsets.only(top: 10, left: 25, right: 25),
       child: ListTile(
-        title: Text(text, style: GoogleFonts.dmSerifText()),
+        title: Text(text, style: TextStyle(fontFamily: "DMSerifText")),
         trailing: Builder(
           builder: (context) => IconButton(
             onPressed: () {

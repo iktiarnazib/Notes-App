@@ -21,7 +21,8 @@ class MyDrawer extends StatelessWidget {
           ),
           Text(
             'Clean Notes',
-            style: GoogleFonts.dmSerifText(
+            style: TextStyle(
+              fontFamily: "DMSerifText",
               fontSize: 30,
               color: Theme.of(context).colorScheme.inversePrimary,
             ),
@@ -37,7 +38,8 @@ class MyDrawer extends StatelessWidget {
             ),
             title: Text(
               'Home',
-              style: GoogleFonts.dmSerifText(
+              style: TextStyle(
+                fontFamily: "DMSerifText",
                 color: Theme.of(context).colorScheme.inversePrimary,
                 fontSize: 17,
               ),
@@ -54,7 +56,8 @@ class MyDrawer extends StatelessWidget {
             ),
             title: Text(
               'Settings',
-              style: GoogleFonts.dmSerifText(
+              style: TextStyle(
+                fontFamily: "DMSerifText",
                 color: Theme.of(context).colorScheme.inversePrimary,
                 fontSize: 17,
               ),
@@ -77,7 +80,8 @@ class MyDrawer extends StatelessWidget {
               ),
               title: Text(
                 'Exit',
-                style: GoogleFonts.dmSerifText(
+                style: TextStyle(
+                  fontFamily: "DMSerifText",
                   color: Theme.of(context).colorScheme.inversePrimary,
                   fontSize: 17,
                 ),
