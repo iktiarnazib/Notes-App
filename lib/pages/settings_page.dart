@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:notesapp2/themes/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -10,19 +11,25 @@ class SettingsPage extends ConsumerStatefulWidget {
   ConsumerState<SettingsPage> createState() => _SettingsPageState();
 }
 
-var switchOn = false;
-
 class _SettingsPageState extends ConsumerState<SettingsPage> {
-  void onSwitchPressed() {
+  void onSwitchPressed() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (ref.read(themeProvider) == lightMode) {
       ref.read(themeProvider.notifier).state = darkMode;
+
+      await prefs.setBool('lightmode', false);
+      setState(() {});
     } else {
       ref.read(themeProvider.notifier).state = lightMode;
+      await prefs.setBool('lightmode', true);
+      setState(() {});
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    //building dark mode checkpoint
+    final isDark = ref.watch(themeProvider) == darkMode;
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings', style: TextStyle(fontFamily: "DMSerifText")),
@@ -54,12 +61,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               Padding(
                 padding: const EdgeInsets.only(right: 10.0),
                 child: Switch.adaptive(
-                  value: switchOn,
+                  value: isDark,
                   onChanged: (value) {
-                    setState(() {
-                      onSwitchPressed();
-                      switchOn = value;
-                    });
+                    onSwitchPressed();
                   },
                 ),
               ),

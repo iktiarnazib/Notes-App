@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:notesapp2/components/my_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class IntroPage extends StatelessWidget {
+class IntroPage extends StatefulWidget {
   const IntroPage({super.key});
+
+  @override
+  State<IntroPage> createState() => _IntroPageState();
+}
+
+class _IntroPageState extends State<IntroPage> {
+  Future<void> _onButtonPressed() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('initialized', true);
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, 'notesPage');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +62,7 @@ class IntroPage extends StatelessWidget {
             //enter button
             MyButton(
               onTap: () {
-                Navigator.pushReplacementNamed(context, 'notesPage');
+                _onButtonPressed();
               },
               child: Icon(
                 Icons.arrow_forward,

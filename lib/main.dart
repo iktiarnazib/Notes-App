@@ -4,24 +4,41 @@ import 'package:notesapp2/pages/intro_page.dart';
 import 'package:notesapp2/pages/notes_page.dart';
 import 'package:notesapp2/pages/settings_page.dart';
 import 'package:notesapp2/themes/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final bool initialized = prefs.getBool('initialized') ?? false;
+  final bool isLightMode = prefs.getBool('lightmode') ?? true;
 
   //initialize isar database
-  runApp(ProviderScope(child: const MyApp()));
+  runApp(
+    ProviderScope(
+      overrides: [
+        themeProvider.overrideWith((ref) => isLightMode ? lightMode : darkMode),
+      ],
+      child: MyApp(initialized: initialized),
+    ),
+  );
 }
 
-class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
+class MyApp extends ConsumerStatefulWidget {
+  final bool? initialized;
 
-  // This widget is the root of your application.
+  const MyApp({super.key, required this.initialized});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
+  Widget build(BuildContext context) {
     final themeMode = ref.watch(themeProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: IntroPage(),
+      home: widget.initialized! ? const NotesPage() : const IntroPage(),
       theme: themeMode,
       color: Theme.of(context).colorScheme.surface,
       routes: {
