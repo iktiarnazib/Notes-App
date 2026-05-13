@@ -24,7 +24,7 @@ void main() async {
 }
 
 class MyApp extends ConsumerStatefulWidget {
-  final bool? initialized;
+  final bool initialized;
 
   const MyApp({super.key, required this.initialized});
 
@@ -38,7 +38,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     final themeMode = ref.watch(themeProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: widget.initialized! ? const NotesPage() : const IntroPage(),
+      home: widget.initialized ? const NotesPage() : const IntroPage(),
       theme: themeMode,
       color: Theme.of(context).colorScheme.surface,
       routes: {

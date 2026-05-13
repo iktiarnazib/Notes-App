@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:notesapp2/themes/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,11 +17,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       ref.read(themeProvider.notifier).state = darkMode;
 
       await prefs.setBool('lightmode', false);
-      setState(() {});
     } else {
       ref.read(themeProvider.notifier).state = lightMode;
       await prefs.setBool('lightmode', true);
-      setState(() {});
     }
   }
 

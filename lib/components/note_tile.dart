@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:notesapp2/components/note_setting.dart';
 import 'package:popover/popover.dart';
 
@@ -23,7 +22,32 @@ class NoteTile extends StatelessWidget {
       ),
       margin: EdgeInsets.only(top: 10, left: 25, right: 25),
       child: ListTile(
-        title: Text(text, style: TextStyle(fontFamily: "DMSerifText")),
+        title: Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(text, style: TextStyle(fontFamily: "DMSerifText")),
+              SizedBox(height: 3),
+              Row(
+                children: [
+                  // Expanded(child: SizedBox()),
+                  Text(
+                    '${DateTime.timestamp().month}/'
+                    "${DateTime.timestamp().day}/"
+                    "${DateTime.timestamp().year} "
+                    "${DateTime.timestamp().hour}:"
+                    "${DateTime.timestamp().minute}",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
         trailing: Builder(
           builder: (context) => IconButton(
             onPressed: () {

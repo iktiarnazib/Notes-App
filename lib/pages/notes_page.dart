@@ -24,14 +24,32 @@ class _NotesPageState extends ConsumerState<NotesPage> {
         return StatefulBuilder(
           builder: (BuildContext context, setState) {
             return AlertDialog(
-              title: Text('Add a note'),
+              title: Text(
+                'Add a note',
+                style: TextStyle(
+                  fontFamily: "DMSerifText",
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextField(
+                  TextFormField(
+                    style: TextStyle(fontFamily: 'DMSerifText'),
+                    //min line 1
+                    //max line 5
+                    //keyboardinput inputtextype multiline
+                    minLines: 1,
+                    maxLines: 5,
+                    keyboardType: TextInputType.multiline,
                     controller: textController,
                     autofocus: true,
                     decoration: InputDecoration(
+                      hintText: 'Add a note',
+                      hintStyle: TextStyle(
+                        fontFamily: 'DMSerifText',
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -45,8 +63,21 @@ class _NotesPageState extends ConsumerState<NotesPage> {
               actions: [
                 //Cancel Button
                 MaterialButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Cancel'),
+                  onPressed: () {
+                    setState(() {
+                      errorText = '';
+                    });
+                    textController.clear();
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontFamily: "DMSerifText",
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
                 ),
 
                 //Save Button
@@ -65,7 +96,15 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                       errorText = '';
                     }
                   },
-                  child: Text('Save'),
+                  child: Text(
+                    'Save',
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 16,
+                      fontFamily: "DMSerifText",
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
                 ),
               ],
             );
@@ -228,7 +267,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
               ],
             ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(right: 20.0),
         child: FloatingActionButton(
           backgroundColor: Theme.of(context).colorScheme.secondary,
           onPressed: onActionButtonPressed,
