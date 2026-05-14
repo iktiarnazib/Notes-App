@@ -4,11 +4,13 @@ import 'package:popover/popover.dart';
 
 class NoteTile extends StatelessWidget {
   final String text;
+  final DateTime timestamp;
   final void Function()? onEditPressed;
   final void Function()? onDeletePressed;
   const NoteTile({
     super.key,
     required this.text,
+    required this.timestamp,
     required this.onEditPressed,
     required this.onDeletePressed,
   });
@@ -22,31 +24,36 @@ class NoteTile extends StatelessWidget {
       ),
       margin: EdgeInsets.only(top: 10, left: 25, right: 25),
       child: ListTile(
-        title: Expanded(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(text, style: TextStyle(fontFamily: "DMSerifText")),
-              SizedBox(height: 3),
-              Row(
-                children: [
-                  // Expanded(child: SizedBox()),
-                  Text(
-                    '${DateTime.timestamp().month}/'
-                    "${DateTime.timestamp().day}/"
-                    "${DateTime.timestamp().year} "
-                    "${DateTime.timestamp().hour}:"
-                    "${DateTime.timestamp().minute}",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
+        title: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.inversePrimary,
+                fontSize: 16,
               ),
-            ],
-          ),
+            ),
+            SizedBox(height: 3),
+            Row(
+              children: [
+                // Expanded(child: SizedBox()),
+                Text(
+                  '${timestamp.month}/'
+                  "${timestamp.day}/"
+                  "${timestamp.year} "
+                  "${timestamp.hour}:"
+                  "${timestamp.minute.toString().padLeft(2, '0')}",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
         trailing: Builder(
           builder: (context) => IconButton(
@@ -64,7 +71,10 @@ class NoteTile extends StatelessWidget {
                 },
               );
             },
-            icon: Icon(Icons.more_vert),
+            icon: Icon(
+              Icons.more_vert,
+              color: Theme.of(context).colorScheme.inversePrimary,
+            ),
           ),
         ),
       ),

@@ -29,6 +29,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     final isDark = ref.watch(themeProvider) == darkMode;
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.inversePrimary,
+        ),
         title: Text('Settings', style: TextStyle(fontFamily: "DMSerifText")),
       ),
       body: Padding(
@@ -58,6 +61,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               Padding(
                 padding: const EdgeInsets.only(right: 10.0),
                 child: Switch.adaptive(
+                  activeThumbColor: Theme.of(
+                    context,
+                  ).colorScheme.inversePrimary,
                   value: isDark,
                   onChanged: (value) {
                     onSwitchPressed();

@@ -43,7 +43,10 @@ class NoteSetting extends StatelessWidget {
             child: Center(
               child: Text(
                 'Delete',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
+                ),
               ),
             ),
           ),

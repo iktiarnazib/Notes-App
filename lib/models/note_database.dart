@@ -24,13 +24,28 @@ class NoteNotifier extends StateNotifier<List<Note>> {
 
   // READ
   Future<void> fetchNotes() async {
-    final fetchedNotes = await db.select(db.notes).get();
+    final fetchedNotes =
+        await (db.select(db.notes)..orderBy([
+              (t) => OrderingTerm(
+                expression: t.timestamp,
+                mode: OrderingMode.desc,
+              ),
+            ]))
+            .get();
+
     state = fetchedNotes;
   }
 
   // CREATE
   Future<void> addNote(String noteText) async {
-    await db.into(db.notes).insert(NotesCompanion.insert(noteText: noteText));
+    await db
+        .into(db.notes)
+        .insert(
+          NotesCompanion.insert(
+            noteText: noteText,
+            timestamp: Value(DateTime.now()), // ← explicitly pass current time
+          ),
+        );
     await fetchNotes();
   }
 

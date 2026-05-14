@@ -21,7 +21,7 @@ class MyDrawer extends StatelessWidget {
           ),
 
           Text(
-            'Clean Notes',
+            'Only Notes',
             style: TextStyle(
               fontFamily: "DMSerifText",
               fontSize: 30,
@@ -34,12 +34,12 @@ class MyDrawer extends StatelessWidget {
             leading: Padding(
               padding: const EdgeInsets.only(left: 10.0),
               child: Icon(
-                Icons.home,
+                Icons.notes,
                 color: Theme.of(context).colorScheme.inversePrimary,
               ),
             ),
             title: Text(
-              'Home',
+              'Notes',
               style: TextStyle(
                 fontFamily: "DMSerifText",
                 color: Theme.of(context).colorScheme.inversePrimary,

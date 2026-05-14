@@ -90,7 +90,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                     } else {
                       ref
                           .read(noteProvider.notifier)
-                          .addNote(textController.text);
+                          .addNote(textController.text.trim());
                       Navigator.pop(context);
                       textController.clear();
                       errorText = '';
@@ -124,6 +124,9 @@ class _NotesPageState extends ConsumerState<NotesPage> {
           backgroundColor: Theme.of(context).colorScheme.surface,
           title: Text('Edit your note'),
           content: TextFormField(
+            minLines: 1,
+            maxLines: 5,
+            keyboardType: TextInputType.multiline,
             controller: textController2,
             autofocus: true,
             decoration: InputDecoration(
@@ -150,11 +153,11 @@ class _NotesPageState extends ConsumerState<NotesPage> {
               onPressed: () {
                 ref
                     .read(noteProvider.notifier)
-                    .updateNote(id, textController2.text);
+                    .updateNote(id, textController2.text.trim());
                 Navigator.pop(context);
                 textController2.clear();
               },
-              child: Text('Save'),
+              child: Text('Save', style: TextStyle(color: Colors.green)),
             ),
           ],
         );
@@ -168,9 +171,9 @@ class _NotesPageState extends ConsumerState<NotesPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.secondary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: Text('Delete the note?'),
-          content: Text("Are you sure you want to delete the '$note' note?"),
+          content: Text("Are you sure you want to delete this note?"),
           actions: [
             //Cancel button
             MaterialButton(
@@ -184,7 +187,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                 ref.read(noteProvider.notifier).deleteNote(id);
                 Navigator.pop(context);
               },
-              child: Text('Yes'),
+              child: Text('Delete', style: TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -198,7 +201,11 @@ class _NotesPageState extends ConsumerState<NotesPage> {
     final notes = ref.watch(noteProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(),
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.inversePrimary,
+        ),
+      ),
       drawer: MyDrawer(
         onTap: () {
           Navigator.pop(context);
@@ -253,6 +260,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                     itemBuilder: (BuildContext context, int index) {
                       return NoteTile(
                         text: notes[index].noteText,
+                        timestamp: notes[index].timestamp,
                         onEditPressed: () {
                           onEditPressed(notes[index].id, notes[index].noteText);
                         },
