@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:notesapp2/components/my_back_button.dart';
 import 'package:notesapp2/themes/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,6 +34,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           color: Theme.of(context).colorScheme.inversePrimary,
         ),
         title: Text('Settings', style: TextStyle(fontFamily: "DMSerifText")),
+        automaticallyImplyLeading: false,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 14.0),
+          child: MyBackButton(),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

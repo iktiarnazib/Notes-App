@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:notesapp2/components/my_drawer.dart';
 import 'package:notesapp2/components/note_tile.dart';
 import 'package:notesapp2/models/note_database.dart';
+import 'package:notesapp2/pages/note_detail_page.dart';
 
 class NotesPage extends ConsumerStatefulWidget {
   const NotesPage({super.key});
@@ -259,6 +260,15 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                     itemCount: notes.length,
                     itemBuilder: (BuildContext context, int index) {
                       return NoteTile(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NoteDetailPage(
+                              title: notes[index].noteText,
+                              description: notes[index].noteText,
+                            ),
+                          ),
+                        ),
                         text: notes[index].noteText,
                         timestamp: notes[index].timestamp,
                         onEditPressed: () {
