@@ -25,16 +25,22 @@ class NoteDetailPage extends StatelessWidget {
         padding: const EdgeInsets.all(25.0),
         child: ListView(
           children: [
-            //title
-            Text(
-              title,
-              style: TextStyle(fontFamily: "DMSerifText", fontSize: 30),
-              softWrap: true,
+            ListTile(
+              contentPadding: EdgeInsets.all(0),
+              title: Text(
+                title,
+                style: TextStyle(fontSize: 30, fontFamily: 'DMSerifText'),
+              ),
+              subtitle: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [Text('Timestamp here')],
+              ),
             ),
             Divider(thickness: 0.5),
 
             //detailed text
-            Text(description),
+            Text(description, style: TextStyle(fontSize: 15)),
           ],
         ),
       ),
