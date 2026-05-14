@@ -46,13 +46,14 @@ class NoteTile extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: 3),
+              SizedBox(height: 2),
               Text(
                 subText,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Theme.of(context).colorScheme.secondary,
-                  fontSize: 12,
+                  fontSize: 13,
+                  fontFamily: 'DMSerifText',
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -64,11 +65,12 @@ class NoteTile extends StatelessWidget {
                     '${timestamp.month}/'
                     "${timestamp.day}/"
                     "${timestamp.year} "
-                    "${timestamp.hour}:"
+                    "${timestamp.hour.toString().padLeft(2, "0")}:"
                     "${timestamp.minute.toString().padLeft(2, '0')}",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                       fontSize: 12,
+                      fontFamily: 'DMSerifText',
                     ),
                   ),
                 ],

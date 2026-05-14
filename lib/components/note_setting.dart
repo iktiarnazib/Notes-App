@@ -25,7 +25,11 @@ class NoteSetting extends StatelessWidget {
             child: Center(
               child: Text(
                 'Edit',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'DMSerifText',
+                  fontSize: 15,
+                ),
               ),
             ),
           ),
@@ -46,6 +50,8 @@ class NoteSetting extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.red,
+                  fontFamily: 'DMSerifText',
+                  fontSize: 15,
                 ),
               ),
             ),
