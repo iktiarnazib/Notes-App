@@ -38,10 +38,13 @@ class NoteTile extends StatelessWidget {
               Text(
                 text,
                 style: TextStyle(
+                  fontFamily: 'DMSerifText',
                   fontWeight: FontWeight.w500,
                   color: Theme.of(context).colorScheme.inversePrimary,
                   fontSize: 16,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 3),
               Text(

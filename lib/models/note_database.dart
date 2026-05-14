@@ -46,7 +46,7 @@ class NoteNotifier extends StateNotifier<List<Note>> {
         .insert(
           NotesCompanion.insert(
             noteText: noteText,
-            noteSubText: noteSubText as Value<String>,
+            noteSubText: Value(noteSubText),
             timestamp: Value(DateTime.now()), // ← explicitly pass current time
           ),
         );

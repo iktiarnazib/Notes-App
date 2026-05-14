@@ -27,7 +27,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
           builder: (BuildContext context, setState) {
             return AlertDialog(
               title: Text(
-                'Note Title',
+                'Add a note',
                 style: TextStyle(
                   fontFamily: "DMSerifText",
                   fontStyle: FontStyle.normal,
@@ -42,7 +42,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                     //max line 5
                     //keyboardinput inputtextype multiline
                     minLines: 1,
-                    maxLines: 5,
+                    maxLines: 3,
                     keyboardType: TextInputType.multiline,
                     controller: titleController,
                     autofocus: true,
@@ -78,10 +78,10 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                     minLines: 4,
                     maxLines: 6,
                     keyboardType: TextInputType.multiline,
-                    controller: titleController,
+                    controller: descriptionController,
                     autofocus: true,
                     decoration: InputDecoration(
-                      hintText: 'Add a note',
+                      hintText: 'Add more details here',
                       hintStyle: TextStyle(
                         fontFamily: 'DMSerifText',
                         color: Theme.of(context).colorScheme.secondary,
@@ -142,6 +142,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                           );
                       Navigator.pop(context);
                       titleController.clear();
+                      descriptionController.clear();
                       errorText = '';
                     }
                   },
@@ -319,7 +320,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                         ),
 
                         text: notes[index].noteText,
-                        subText: notes[index].noteText,
+                        subText: notes[index].noteSubText,
                         timestamp: notes[index].timestamp,
                         onEditPressed: () {
                           onEditPressed(notes[index].id, notes[index].noteText);
