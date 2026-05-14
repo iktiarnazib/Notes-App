@@ -37,7 +37,7 @@ class _IntroPageState extends State<IntroPage> {
             //title
             FittedBox(
               child: Text(
-                'Clean Notes',
+                'Only Notes',
                 style: TextStyle(
                   fontFamily: "DMSerifText",
                   fontSize: 24,
@@ -50,9 +50,9 @@ class _IntroPageState extends State<IntroPage> {
             //subtitle
             FittedBox(
               child: Text(
-                'Remember what you do everyday',
+                'Keep your notes private and personal',
+                softWrap: true,
                 style: TextStyle(
-                  fontFamily: "DMSerifText",
                   color: Theme.of(context).colorScheme.inversePrimary,
                   fontSize: 15,
                 ),
