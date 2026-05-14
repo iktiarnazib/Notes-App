@@ -37,12 +37,16 @@ class NoteNotifier extends StateNotifier<List<Note>> {
   }
 
   // CREATE
-  Future<void> addNote(String noteText) async {
+  Future<void> addNote({
+    required String noteText,
+    required String noteSubText,
+  }) async {
     await db
         .into(db.notes)
         .insert(
           NotesCompanion.insert(
             noteText: noteText,
+            noteSubText: noteSubText as Value<String>,
             timestamp: Value(DateTime.now()), // ← explicitly pass current time
           ),
         );
