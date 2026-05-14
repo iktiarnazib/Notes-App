@@ -14,8 +14,10 @@ class NotesPage extends ConsumerStatefulWidget {
 
 class _NotesPageState extends ConsumerState<NotesPage> {
   TextEditingController titleController = TextEditingController();
-  TextEditingController textController2 = TextEditingController();
+  TextEditingController titleController2 = TextEditingController();
+
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController descriptionController2 = TextEditingController();
   var errorText = '';
   //create a note
   void onActionButtonPressed() {
@@ -164,49 +166,124 @@ class _NotesPageState extends ConsumerState<NotesPage> {
   }
 
   //update a note
-  void onEditPressed(int id, String oldText) {
-    textController2.text = oldText;
+  void onEditPressed(int id, String oldText, String oldDescription) {
+    titleController2.text = oldText;
+    descriptionController2.text = oldDescription;
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.surface,
-          title: Text('Edit your note'),
-          content: TextFormField(
-            minLines: 1,
-            maxLines: 5,
-            keyboardType: TextInputType.multiline,
-            controller: textController2,
-            autofocus: true,
-            decoration: InputDecoration(
-              hint: Text(
-                'Edit the text...',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.inversePrimary,
+          title: Text('Edit note', style: TextStyle(fontFamily: 'DMSerifText')),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                style: TextStyle(fontFamily: 'DMSerifText'),
+                //min line 1
+                //max line 5
+                //keyboardinput inputtextype multiline
+                minLines: 1,
+                maxLines: 3,
+                keyboardType: TextInputType.multiline,
+                controller: titleController2,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: 'Add more details here',
+                  hintStyle: TextStyle(
+                    fontFamily: 'DMSerifText',
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                    ),
+                  ),
                 ),
               ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+              SizedBox(height: 10),
+              TextFormField(
+                style: TextStyle(fontFamily: 'DMSerifText'),
+                //min line 1
+                //max line 5
+                //keyboardinput inputtextype multiline
+                minLines: 4,
+                maxLines: 6,
+                keyboardType: TextInputType.multiline,
+                controller: descriptionController2,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: 'Add more details here',
+                  hintStyle: TextStyle(
+                    fontFamily: 'DMSerifText',
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
           actions: [
             //Cancel Button
             MaterialButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  fontFamily: 'DMSerifText',
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                ),
+              ),
             ),
 
             //Save Button
-            MaterialButton(
+            FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: Colors.green.shade800,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ),
               onPressed: () {
                 ref
                     .read(noteProvider.notifier)
-                    .updateNote(id, textController2.text.trim());
-                Navigator.pop(context);
-                textController2.clear();
+                    .updateNote(
+                      id: id,
+                      newText: titleController2.text.trim(),
+                      newSubText: descriptionController2.text.trim(),
+                      timeStamp: DateTime.now(),
+                    );
+                if (mounted) {
+                  Navigator.pop(context);
+                }
               },
-              child: Text('Save', style: TextStyle(color: Colors.green)),
+
+              child: Text(
+                'Save',
+                style: TextStyle(fontFamily: 'DMSerifText', fontSize: 16),
+              ),
             ),
           ],
         );
@@ -227,7 +304,10 @@ class _NotesPageState extends ConsumerState<NotesPage> {
             //Cancel button
             MaterialButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
+              child: Text(
+                'Cancel',
+                style: TextStyle(fontFamily: 'DMSerifText'),
+              ),
             ),
 
             //yes button
@@ -236,7 +316,10 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                 ref.read(noteProvider.notifier).deleteNote(id);
                 Navigator.pop(context);
               },
-              child: Text('Delete', style: TextStyle(color: Colors.red)),
+              child: Text(
+                'Delete',
+                style: TextStyle(color: Colors.red, fontFamily: 'DMSerifText'),
+              ),
             ),
           ],
         );
@@ -312,6 +395,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => NoteDetailPage(
+                              id: notes[index].id,
                               title: notes[index].noteText,
                               description: notes[index].noteSubText,
                               timestamp: notes[index].timestamp,
@@ -323,7 +407,11 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                         subText: notes[index].noteSubText,
                         timestamp: notes[index].timestamp,
                         onEditPressed: () {
-                          onEditPressed(notes[index].id, notes[index].noteText);
+                          onEditPressed(
+                            notes[index].id,
+                            notes[index].noteText,
+                            notes[index].noteSubText,
+                          );
                         },
                         onDeletePressed: () => onDeletePressed(
                           notes[index].id,

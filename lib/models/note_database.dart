@@ -54,9 +54,18 @@ class NoteNotifier extends StateNotifier<List<Note>> {
   }
 
   // UPDATE
-  Future<void> updateNote(int id, String newText) async {
+  Future<void> updateNote({
+    required int id,
+    required String newText,
+    required String newSubText,
+    required DateTime timeStamp,
+  }) async {
     await (db.update(db.notes)..where((t) => t.id.equals(id))).write(
-      NotesCompanion(noteText: Value(newText)),
+      NotesCompanion(
+        noteText: Value(newText),
+        noteSubText: Value(newSubText),
+        timestamp: Value(timeStamp),
+      ),
     );
     await fetchNotes();
   }
