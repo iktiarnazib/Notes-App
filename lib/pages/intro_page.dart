@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:notesapp2/components/my_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

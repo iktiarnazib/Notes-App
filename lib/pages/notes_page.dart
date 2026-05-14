@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:notesapp2/components/my_drawer.dart';
 import 'package:notesapp2/components/note_tile.dart';
 import 'package:notesapp2/models/note_database.dart';
@@ -315,6 +314,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                             builder: (context) => NoteDetailPage(
                               title: notes[index].noteText,
                               description: notes[index].noteSubText,
+                              timestamp: notes[index].timestamp,
                             ),
                           ),
                         ),
