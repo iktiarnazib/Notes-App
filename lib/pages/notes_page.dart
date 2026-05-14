@@ -269,7 +269,9 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                             ),
                           ),
                         ),
+
                         text: notes[index].noteText,
+                        subText: notes[index].noteText,
                         timestamp: notes[index].timestamp,
                         onEditPressed: () {
                           onEditPressed(notes[index].id, notes[index].noteText);

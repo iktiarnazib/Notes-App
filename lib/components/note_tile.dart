@@ -5,9 +5,11 @@ import 'package:popover/popover.dart';
 class NoteTile extends StatelessWidget {
   final String text;
   final DateTime timestamp;
+  final String subText;
   final void Function()? onEditPressed;
   final void Function()? onDeletePressed;
   final void Function()? onTap;
+
   const NoteTile({
     super.key,
     required this.text,
@@ -15,6 +17,7 @@ class NoteTile extends StatelessWidget {
     required this.onEditPressed,
     required this.onDeletePressed,
     required this.onTap,
+    required this.subText,
   });
 
   @override
@@ -41,6 +44,16 @@ class NoteTile extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 3),
+              Text(
+                subText,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontSize: 12,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
               Row(
                 children: [
                   // Expanded(child: SizedBox()),
