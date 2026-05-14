@@ -4,10 +4,12 @@ import 'package:notesapp2/components/my_back_button.dart';
 class NoteDetailPage extends StatelessWidget {
   final String title;
   final String description;
+  final DateTime timestamp;
   const NoteDetailPage({
     super.key,
     required this.title,
     required this.description,
+    required this.timestamp,
   });
 
   @override
@@ -34,7 +36,18 @@ class NoteDetailPage extends StatelessWidget {
               subtitle: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
-                children: [Text('Timestamp here')],
+                children: [
+                  Text(
+                    "${timestamp.month}/"
+                    "${timestamp.day}/"
+                    "${timestamp.year} "
+                    "${timestamp.hour}:"
+                    "${timestamp.minute.toString().padLeft(2, "0")}",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.tertiary,
+                    ),
+                  ),
+                ],
               ),
             ),
             Divider(thickness: 0.5),
