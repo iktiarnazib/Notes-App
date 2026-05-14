@@ -34,7 +34,7 @@ class NoteDetailPage extends StatelessWidget {
             Divider(thickness: 0.5),
 
             //detailed text
-            Text(title),
+            Text(description),
           ],
         ),
       ),

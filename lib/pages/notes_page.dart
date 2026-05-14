@@ -14,8 +14,9 @@ class NotesPage extends ConsumerStatefulWidget {
 }
 
 class _NotesPageState extends ConsumerState<NotesPage> {
-  TextEditingController textController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
   TextEditingController textController2 = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   var errorText = '';
   //create a note
   void onActionButtonPressed() {
@@ -26,7 +27,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
           builder: (BuildContext context, setState) {
             return AlertDialog(
               title: Text(
-                'Add a note',
+                'Note Title',
                 style: TextStyle(
                   fontFamily: "DMSerifText",
                   fontStyle: FontStyle.normal,
@@ -43,7 +44,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                     minLines: 1,
                     maxLines: 5,
                     keyboardType: TextInputType.multiline,
-                    controller: textController,
+                    controller: titleController,
                     autofocus: true,
                     decoration: InputDecoration(
                       hintText: 'Add a note',
@@ -53,6 +54,50 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (errorText.isNotEmpty)
+                    Text(errorText, style: TextStyle(color: Colors.red)),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    style: TextStyle(fontFamily: 'DMSerifText'),
+                    //min line 1
+                    //max line 5
+                    //keyboardinput inputtextype multiline
+                    minLines: 4,
+                    maxLines: 6,
+                    keyboardType: TextInputType.multiline,
+                    controller: titleController,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: 'Add a note',
+                      hintStyle: TextStyle(
+                        fontFamily: 'DMSerifText',
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                        ),
                       ),
                     ),
                   ),
@@ -68,7 +113,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                     setState(() {
                       errorText = '';
                     });
-                    textController.clear();
+                    titleController.clear();
                     Navigator.pop(context);
                   },
                   child: Text(
@@ -84,16 +129,19 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                 //Save Button
                 MaterialButton(
                   onPressed: () {
-                    if (textController.text.trim().isEmpty) {
+                    if (titleController.text.trim().isEmpty) {
                       setState(() {
                         errorText = 'Please enter a text';
                       });
                     } else {
                       ref
                           .read(noteProvider.notifier)
-                          .addNote(textController.text.trim());
+                          .addNote(
+                            noteText: titleController.text.trim(),
+                            noteSubText: descriptionController.text.trim(),
+                          );
                       Navigator.pop(context);
-                      textController.clear();
+                      titleController.clear();
                       errorText = '';
                     }
                   },
@@ -265,7 +313,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                           MaterialPageRoute(
                             builder: (context) => NoteDetailPage(
                               title: notes[index].noteText,
-                              description: notes[index].noteText,
+                              description: notes[index].noteSubText,
                             ),
                           ),
                         ),

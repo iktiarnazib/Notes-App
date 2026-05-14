@@ -12,12 +12,18 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onUpgrade: (migrator, from, to) async {
       if (from < 2) {
         await migrator.addColumn(notes, notes.timestamp);
+      }
+      if (from < 3) {
+        await migrator.addColumn(
+          notes,
+          notes.noteSubText as GeneratedColumn<Object>,
+        );
       }
     },
   );

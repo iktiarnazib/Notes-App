@@ -32,6 +32,18 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _noteSubTextMeta = const VerificationMeta(
+    'noteSubText',
+  );
+  @override
+  late final GeneratedColumn<String> noteSubText = GeneratedColumn<String>(
+    'note_sub_text',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
   static const VerificationMeta _timestampMeta = const VerificationMeta(
     'timestamp',
   );
@@ -45,7 +57,7 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
     defaultValue: Constant(DateTime(2000)),
   );
   @override
-  List<GeneratedColumn> get $columns => [id, noteText, timestamp];
+  List<GeneratedColumn> get $columns => [id, noteText, noteSubText, timestamp];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -68,6 +80,15 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
       );
     } else if (isInserting) {
       context.missing(_noteTextMeta);
+    }
+    if (data.containsKey('note_sub_text')) {
+      context.handle(
+        _noteSubTextMeta,
+        noteSubText.isAcceptableOrUnknown(
+          data['note_sub_text']!,
+          _noteSubTextMeta,
+        ),
+      );
     }
     if (data.containsKey('timestamp')) {
       context.handle(
@@ -92,6 +113,10 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
         DriftSqlType.string,
         data['${effectivePrefix}note_text'],
       )!,
+      noteSubText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note_sub_text'],
+      )!,
       timestamp: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}timestamp'],
@@ -108,10 +133,12 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
 class Note extends DataClass implements Insertable<Note> {
   final int id;
   final String noteText;
+  final String noteSubText;
   final DateTime timestamp;
   const Note({
     required this.id,
     required this.noteText,
+    required this.noteSubText,
     required this.timestamp,
   });
   @override
@@ -119,6 +146,7 @@ class Note extends DataClass implements Insertable<Note> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['note_text'] = Variable<String>(noteText);
+    map['note_sub_text'] = Variable<String>(noteSubText);
     map['timestamp'] = Variable<DateTime>(timestamp);
     return map;
   }
@@ -127,6 +155,7 @@ class Note extends DataClass implements Insertable<Note> {
     return NotesCompanion(
       id: Value(id),
       noteText: Value(noteText),
+      noteSubText: Value(noteSubText),
       timestamp: Value(timestamp),
     );
   }
@@ -139,6 +168,7 @@ class Note extends DataClass implements Insertable<Note> {
     return Note(
       id: serializer.fromJson<int>(json['id']),
       noteText: serializer.fromJson<String>(json['noteText']),
+      noteSubText: serializer.fromJson<String>(json['noteSubText']),
       timestamp: serializer.fromJson<DateTime>(json['timestamp']),
     );
   }
@@ -148,19 +178,29 @@ class Note extends DataClass implements Insertable<Note> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'noteText': serializer.toJson<String>(noteText),
+      'noteSubText': serializer.toJson<String>(noteSubText),
       'timestamp': serializer.toJson<DateTime>(timestamp),
     };
   }
 
-  Note copyWith({int? id, String? noteText, DateTime? timestamp}) => Note(
+  Note copyWith({
+    int? id,
+    String? noteText,
+    String? noteSubText,
+    DateTime? timestamp,
+  }) => Note(
     id: id ?? this.id,
     noteText: noteText ?? this.noteText,
+    noteSubText: noteSubText ?? this.noteSubText,
     timestamp: timestamp ?? this.timestamp,
   );
   Note copyWithCompanion(NotesCompanion data) {
     return Note(
       id: data.id.present ? data.id.value : this.id,
       noteText: data.noteText.present ? data.noteText.value : this.noteText,
+      noteSubText: data.noteSubText.present
+          ? data.noteSubText.value
+          : this.noteSubText,
       timestamp: data.timestamp.present ? data.timestamp.value : this.timestamp,
     );
   }
@@ -170,44 +210,51 @@ class Note extends DataClass implements Insertable<Note> {
     return (StringBuffer('Note(')
           ..write('id: $id, ')
           ..write('noteText: $noteText, ')
+          ..write('noteSubText: $noteSubText, ')
           ..write('timestamp: $timestamp')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, noteText, timestamp);
+  int get hashCode => Object.hash(id, noteText, noteSubText, timestamp);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Note &&
           other.id == this.id &&
           other.noteText == this.noteText &&
+          other.noteSubText == this.noteSubText &&
           other.timestamp == this.timestamp);
 }
 
 class NotesCompanion extends UpdateCompanion<Note> {
   final Value<int> id;
   final Value<String> noteText;
+  final Value<String> noteSubText;
   final Value<DateTime> timestamp;
   const NotesCompanion({
     this.id = const Value.absent(),
     this.noteText = const Value.absent(),
+    this.noteSubText = const Value.absent(),
     this.timestamp = const Value.absent(),
   });
   NotesCompanion.insert({
     this.id = const Value.absent(),
     required String noteText,
+    this.noteSubText = const Value.absent(),
     this.timestamp = const Value.absent(),
   }) : noteText = Value(noteText);
   static Insertable<Note> custom({
     Expression<int>? id,
     Expression<String>? noteText,
+    Expression<String>? noteSubText,
     Expression<DateTime>? timestamp,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (noteText != null) 'note_text': noteText,
+      if (noteSubText != null) 'note_sub_text': noteSubText,
       if (timestamp != null) 'timestamp': timestamp,
     });
   }
@@ -215,11 +262,13 @@ class NotesCompanion extends UpdateCompanion<Note> {
   NotesCompanion copyWith({
     Value<int>? id,
     Value<String>? noteText,
+    Value<String>? noteSubText,
     Value<DateTime>? timestamp,
   }) {
     return NotesCompanion(
       id: id ?? this.id,
       noteText: noteText ?? this.noteText,
+      noteSubText: noteSubText ?? this.noteSubText,
       timestamp: timestamp ?? this.timestamp,
     );
   }
@@ -233,6 +282,9 @@ class NotesCompanion extends UpdateCompanion<Note> {
     if (noteText.present) {
       map['note_text'] = Variable<String>(noteText.value);
     }
+    if (noteSubText.present) {
+      map['note_sub_text'] = Variable<String>(noteSubText.value);
+    }
     if (timestamp.present) {
       map['timestamp'] = Variable<DateTime>(timestamp.value);
     }
@@ -244,6 +296,7 @@ class NotesCompanion extends UpdateCompanion<Note> {
     return (StringBuffer('NotesCompanion(')
           ..write('id: $id, ')
           ..write('noteText: $noteText, ')
+          ..write('noteSubText: $noteSubText, ')
           ..write('timestamp: $timestamp')
           ..write(')'))
         .toString();
@@ -265,12 +318,14 @@ typedef $$NotesTableCreateCompanionBuilder =
     NotesCompanion Function({
       Value<int> id,
       required String noteText,
+      Value<String> noteSubText,
       Value<DateTime> timestamp,
     });
 typedef $$NotesTableUpdateCompanionBuilder =
     NotesCompanion Function({
       Value<int> id,
       Value<String> noteText,
+      Value<String> noteSubText,
       Value<DateTime> timestamp,
     });
 
@@ -289,6 +344,11 @@ class $$NotesTableFilterComposer extends Composer<_$AppDatabase, $NotesTable> {
 
   ColumnFilters<String> get noteText => $composableBuilder(
     column: $table.noteText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get noteSubText => $composableBuilder(
+    column: $table.noteSubText,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -317,6 +377,11 @@ class $$NotesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get noteSubText => $composableBuilder(
+    column: $table.noteSubText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get timestamp => $composableBuilder(
     column: $table.timestamp,
     builder: (column) => ColumnOrderings(column),
@@ -337,6 +402,11 @@ class $$NotesTableAnnotationComposer
 
   GeneratedColumn<String> get noteText =>
       $composableBuilder(column: $table.noteText, builder: (column) => column);
+
+  GeneratedColumn<String> get noteSubText => $composableBuilder(
+    column: $table.noteSubText,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<DateTime> get timestamp =>
       $composableBuilder(column: $table.timestamp, builder: (column) => column);
@@ -372,20 +442,24 @@ class $$NotesTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> noteText = const Value.absent(),
+                Value<String> noteSubText = const Value.absent(),
                 Value<DateTime> timestamp = const Value.absent(),
               }) => NotesCompanion(
                 id: id,
                 noteText: noteText,
+                noteSubText: noteSubText,
                 timestamp: timestamp,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required String noteText,
+                Value<String> noteSubText = const Value.absent(),
                 Value<DateTime> timestamp = const Value.absent(),
               }) => NotesCompanion.insert(
                 id: id,
                 noteText: noteText,
+                noteSubText: noteSubText,
                 timestamp: timestamp,
               ),
           withReferenceMapper: (p0) => p0
