@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:notesapp2/components/my_drawer.dart';
 import 'package:notesapp2/components/my_key_button.dart';
-import 'package:notesapp2/components/my_style_button.dart';
 import 'package:notesapp2/components/note_tile.dart';
 import 'package:notesapp2/models/note_database.dart';
 import 'package:notesapp2/pages/note_detail_page.dart';
@@ -91,8 +89,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                         ),
                       ),
                     ),
-                    if (errorText.isNotEmpty)
-                      Text(errorText, style: TextStyle(color: Colors.red)),
+
                     SizedBox(height: 10),
                     TextFormField(
                       style: TextStyle(fontFamily: 'DMSerifText'),
@@ -126,7 +123,13 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                       ),
                     ),
                     if (errorText.isNotEmpty)
-                      Text(errorText, style: TextStyle(color: Colors.red)),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(height: 10),
+                          Text(errorText, style: TextStyle(color: Colors.red)),
+                        ],
+                      ),
                   ],
                 ),
               ),
@@ -140,7 +143,10 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                       errorText = '';
                     });
                     titleController.clear();
-                    Navigator.pop(context);
+                    descriptionController.clear();
+                    if (mounted) {
+                      Navigator.pop(context);
+                    }
                   },
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -150,24 +156,24 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                 MyKeyButton(
                   text: 'Save',
                   onPressed: () {
-                    () {
-                      if (titleController.text.trim().isEmpty) {
-                        setState(() {
-                          errorText = 'Please enter a text';
-                        });
-                      } else {
-                        ref
-                            .read(noteProvider.notifier)
-                            .addNote(
-                              noteText: titleController.text.trim(),
-                              noteSubText: descriptionController.text.trim(),
-                            );
-                        Navigator.pop(context);
-                        titleController.clear();
-                        descriptionController.clear();
+                    if (titleController.text.trim().isEmpty) {
+                      setState(() {
+                        errorText = 'Please enter a Title';
+                      });
+                    } else {
+                      ref
+                          .read(noteProvider.notifier)
+                          .addNote(
+                            noteText: titleController.text.trim(),
+                            noteSubText: descriptionController.text.trim(),
+                          );
+                      Navigator.pop(context);
+                      titleController.clear();
+                      descriptionController.clear();
+                      setState(() {
                         errorText = '';
-                      }
-                    };
+                      });
+                    }
                   },
                   backgroundColor: Colors.green.shade600,
                   foregroundColor: Colors.white,
