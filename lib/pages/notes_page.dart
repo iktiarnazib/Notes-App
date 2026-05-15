@@ -172,6 +172,9 @@ class _NotesPageState extends ConsumerState<NotesPage> {
   void onEditPressed(int id, String oldText, String oldDescription) {
     titleController2.text = oldText;
     descriptionController2.text = oldDescription;
+    descriptionController2.selection = TextSelection.fromPosition(
+      TextPosition(offset: descriptionController2.text.length),
+    );
     showDialog(
       context: context,
       builder: (context) {
@@ -191,9 +194,9 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                   maxLines: 3,
                   keyboardType: TextInputType.multiline,
                   controller: titleController2,
-                  autofocus: true,
+
                   decoration: InputDecoration(
-                    hintText: 'Add more details here',
+                    hintText: 'Edit Your Title',
                     hintStyle: TextStyle(
                       fontFamily: 'DMSerifText',
                       color: Theme.of(context).colorScheme.secondary,
@@ -222,10 +225,11 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                   minLines: 4,
                   maxLines: 6,
                   keyboardType: TextInputType.multiline,
+
                   controller: descriptionController2,
                   autofocus: true,
                   decoration: InputDecoration(
-                    hintText: 'Add more details here',
+                    hintText: 'Edit your description',
                     hintStyle: TextStyle(
                       fontFamily: 'DMSerifText',
                       color: Theme.of(context).colorScheme.secondary,
@@ -322,8 +326,14 @@ class _NotesPageState extends ConsumerState<NotesPage> {
       builder: (context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.primary,
-          title: Text('Delete the note?'),
-          content: Text("Are you sure you want to delete this note?"),
+          title: Text(
+            'Delete the note?',
+            style: TextStyle(fontFamily: 'DMSerifText'),
+          ),
+          content: Text(
+            "Are you sure you want to delete this note?",
+            style: TextStyle(fontFamily: 'DMSerifText'),
+          ),
           actions: [
             //Cancel button
             MyKeyButton(
@@ -365,6 +375,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
+        leading: Icon(Icons.sunny),
         iconTheme: IconThemeData(
           color: Theme.of(context).colorScheme.inversePrimary,
         ),
@@ -456,10 +467,16 @@ class _NotesPageState extends ConsumerState<NotesPage> {
             ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(right: 20.0),
-        child: FloatingActionButton(
-          backgroundColor: Theme.of(context).colorScheme.secondary,
+        child: FloatingActionButton.extended(
+          label: Text(
+            'Add a note',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.inversePrimary,
+            ),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.primary,
           onPressed: onActionButtonPressed,
-          child: Icon(
+          icon: Icon(
             Icons.add,
             color: Theme.of(context).colorScheme.inversePrimary,
           ),

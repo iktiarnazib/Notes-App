@@ -25,6 +25,7 @@ class NoteDetailPage extends ConsumerStatefulWidget {
 class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+
   //update a note
   void onEditPressed({
     required int id,
@@ -52,9 +53,9 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
                   maxLines: 3,
                   keyboardType: TextInputType.multiline,
                   controller: titleController,
-                  autofocus: true,
+
                   decoration: InputDecoration(
-                    hintText: 'Add more details here',
+                    hintText: 'Edit your title',
                     hintStyle: TextStyle(
                       fontFamily: 'DMSerifText',
                       color: Theme.of(context).colorScheme.secondary,
@@ -86,7 +87,7 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
                   controller: descriptionController,
                   autofocus: true,
                   decoration: InputDecoration(
-                    hintText: 'Add more details here',
+                    hintText: 'Edit your description',
                     hintStyle: TextStyle(
                       fontFamily: 'DMSerifText',
                       color: Theme.of(context).colorScheme.secondary,
@@ -158,8 +159,14 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
       builder: (context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.primary,
-          title: Text('Delete the note?'),
-          content: Text("Are you sure you want to delete this note?"),
+          title: Text(
+            'Delete the note?',
+            style: TextStyle(fontFamily: 'DMSerifText'),
+          ),
+          content: Text(
+            "Are you sure you want to delete this note?",
+            style: TextStyle(fontFamily: 'DMSerifText'),
+          ),
           actions: [
             //Cancel button
             MyKeyButton(
