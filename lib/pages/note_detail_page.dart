@@ -203,28 +203,19 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
           'Note Details',
           style: TextStyle(fontFamily: 'DMSerifText'),
         ),
+        centerTitle: true,
         automaticallyImplyLeading: false,
         leading: Padding(
           padding: const EdgeInsets.only(left: 12.0),
           child: MyBackButton(),
         ),
         actions: [
-          MyStyleButton(
-            onTap: () => onDeletePressed(widget.id),
-            icon: Icons.delete,
-            iconColor: Colors.red.shade400,
-          ),
-          SizedBox(width: 5),
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
             child: MyStyleButton(
-              icon: Icons.edit,
-              iconColor: Theme.of(context).colorScheme.inversePrimary,
-              onTap: () => onEditPressed(
-                id: widget.id,
-                oldText: widget.title,
-                oldDescription: widget.description,
-              ),
+              icon: Icons.delete,
+              iconColor: Colors.red.shade300,
+              onTap: () => onDeletePressed(widget.id),
             ),
           ),
         ],
@@ -259,6 +250,24 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
               style: TextStyle(fontSize: 17, fontFamily: 'DMSerifText'),
             ),
           ],
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 20.0),
+        child: FloatingActionButton.extended(
+          label: Text(
+            'Edit',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.inversePrimary,
+            ),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          onPressed: () => onEditPressed(
+            id: widget.id,
+            oldText: widget.title,
+            oldDescription: widget.description,
+          ),
+          icon: Icon(Icons.edit, color: Colors.green.shade700),
         ),
       ),
     );
