@@ -26,6 +26,18 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
+  late String currentTitle;
+  late String currentDescrition;
+  late DateTime currentTime;
+
+  @override
+  void initState() {
+    currentTitle = widget.title;
+    currentDescrition = widget.description;
+    currentTime = widget.timestamp;
+    super.initState();
+  }
+
   //update a note
   void onEditPressed({
     required int id,
@@ -53,7 +65,7 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
                   maxLines: 3,
                   keyboardType: TextInputType.multiline,
                   controller: titleController,
-
+                  autofocus: isTitle ? true : false,
                   decoration: InputDecoration(
                     hintText: 'Edit your title',
                     hintStyle: TextStyle(
@@ -85,7 +97,7 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
                   maxLines: 6,
                   keyboardType: TextInputType.multiline,
                   controller: descriptionController,
-                  autofocus: true,
+                  autofocus: isTitle ? false : true,
                   decoration: InputDecoration(
                     hintText: 'Edit your description',
                     hintStyle: TextStyle(
@@ -136,9 +148,11 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
                       newSubText: descriptionController.text.trim(),
                       timeStamp: DateTime.now(),
                     );
-                if (mounted) {
-                  Navigator.pop(context);
-                }
+                setState(() {
+                  currentTitle = titleController.text.trim();
+                  currentDescrition = descriptionController.text.trim();
+                  currentTime = DateTime.now();
+                });
                 if (mounted) {
                   Navigator.pop(context);
                 }
@@ -195,6 +209,8 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
     );
   }
 
+  bool isTitle = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -226,16 +242,28 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
           children: [
             ListTile(
               contentPadding: EdgeInsets.all(0),
-              title: Text(
-                widget.title,
-                style: TextStyle(fontSize: 30, fontFamily: 'DMSerifText'),
+              title: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isTitle = true;
+                  });
+                  onEditPressed(
+                    id: widget.id,
+                    oldText: currentTitle,
+                    oldDescription: currentDescrition,
+                  );
+                },
+                child: Text(
+                  currentTitle,
+                  style: TextStyle(fontSize: 30, fontFamily: 'DMSerifText'),
+                ),
               ),
               subtitle: Text(
-                "${widget.timestamp.month}/"
-                "${widget.timestamp.day}/"
-                "${widget.timestamp.year} "
-                "${widget.timestamp.hour}:"
-                "${widget.timestamp.minute.toString().padLeft(2, "0")}",
+                "${currentTime.month}/"
+                "${currentTime.day}/"
+                "${currentTime.year} "
+                "${currentTime.hour.toString().padLeft(2, "0")}:"
+                "${currentTime.minute.toString().padLeft(2, "0")}",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.tertiary,
                   fontFamily: 'DMSerifText',
@@ -245,10 +273,43 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
             Divider(thickness: 0.5),
 
             //detailed text
-            Text(
-              widget.description,
-              style: TextStyle(fontSize: 17, fontFamily: 'DMSerifText'),
-            ),
+            currentDescrition.isEmpty
+                ? GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isTitle = false;
+                      });
+                      onEditPressed(
+                        id: widget.id,
+                        oldText: currentTitle,
+                        oldDescription: currentDescrition,
+                      );
+                    },
+                    child: Text(
+                      'Click here to add a description',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontFamily: 'DMSerifText',
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                  )
+                : GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isTitle = false;
+                      });
+                      onEditPressed(
+                        id: widget.id,
+                        oldText: currentTitle,
+                        oldDescription: currentDescrition,
+                      );
+                    },
+                    child: Text(
+                      currentDescrition,
+                      style: TextStyle(fontSize: 17, fontFamily: 'DMSerifText'),
+                    ),
+                  ),
           ],
         ),
       ),
@@ -264,8 +325,8 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
           backgroundColor: Theme.of(context).colorScheme.primary,
           onPressed: () => onEditPressed(
             id: widget.id,
-            oldText: widget.title,
-            oldDescription: widget.description,
+            oldText: currentTitle,
+            oldDescription: currentDescrition,
           ),
           icon: Icon(Icons.edit, color: Colors.green.shade700),
         ),

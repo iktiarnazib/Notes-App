@@ -48,7 +48,7 @@ class NoteTile extends StatelessWidget {
               ),
               SizedBox(height: 2),
               Text(
-                subText,
+                subText.isEmpty ? 'Add a descripion' : subText,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Theme.of(context).colorScheme.secondary,
