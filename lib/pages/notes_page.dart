@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:notesapp2/components/my_drawer.dart';
+import 'package:notesapp2/components/my_key_button.dart';
 import 'package:notesapp2/components/note_tile.dart';
 import 'package:notesapp2/models/note_database.dart';
 import 'package:notesapp2/pages/note_detail_page.dart';
@@ -34,77 +35,79 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                   fontStyle: FontStyle.normal,
                 ),
               ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextFormField(
-                    style: TextStyle(fontFamily: 'DMSerifText'),
-                    //min line 1
-                    //max line 5
-                    //keyboardinput inputtextype multiline
-                    minLines: 1,
-                    maxLines: 3,
-                    keyboardType: TextInputType.multiline,
-                    controller: titleController,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      hintText: 'Add a note',
-                      hintStyle: TextStyle(
-                        fontFamily: 'DMSerifText',
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextFormField(
+                      style: TextStyle(fontFamily: 'DMSerifText'),
+                      //min line 1
+                      //max line 5
+                      //keyboardinput inputtextype multiline
+                      minLines: 1,
+                      maxLines: 3,
+                      keyboardType: TextInputType.multiline,
+                      controller: titleController,
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        hintText: 'Add a note',
+                        hintStyle: TextStyle(
+                          fontFamily: 'DMSerifText',
                           color: Theme.of(context).colorScheme.secondary,
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.inversePrimary,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  if (errorText.isNotEmpty)
-                    Text(errorText, style: TextStyle(color: Colors.red)),
-                  SizedBox(height: 10),
-                  TextFormField(
-                    style: TextStyle(fontFamily: 'DMSerifText'),
-                    //min line 1
-                    //max line 5
-                    //keyboardinput inputtextype multiline
-                    minLines: 4,
-                    maxLines: 6,
-                    keyboardType: TextInputType.multiline,
-                    controller: descriptionController,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      hintText: 'Add more details here',
-                      hintStyle: TextStyle(
-                        fontFamily: 'DMSerifText',
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
+                    if (errorText.isNotEmpty)
+                      Text(errorText, style: TextStyle(color: Colors.red)),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      style: TextStyle(fontFamily: 'DMSerifText'),
+                      //min line 1
+                      //max line 5
+                      //keyboardinput inputtextype multiline
+                      minLines: 4,
+                      maxLines: 6,
+                      keyboardType: TextInputType.multiline,
+                      controller: descriptionController,
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        hintText: 'Add more details here',
+                        hintStyle: TextStyle(
+                          fontFamily: 'DMSerifText',
                           color: Theme.of(context).colorScheme.secondary,
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.inversePrimary,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  if (errorText.isNotEmpty)
-                    Text(errorText, style: TextStyle(color: Colors.red)),
-                ],
+                    if (errorText.isNotEmpty)
+                      Text(errorText, style: TextStyle(color: Colors.red)),
+                  ],
+                ),
               ),
 
               actions: [
@@ -175,73 +178,75 @@ class _NotesPageState extends ConsumerState<NotesPage> {
         return AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.surface,
           title: Text('Edit note', style: TextStyle(fontFamily: 'DMSerifText')),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                style: TextStyle(fontFamily: 'DMSerifText'),
-                //min line 1
-                //max line 5
-                //keyboardinput inputtextype multiline
-                minLines: 1,
-                maxLines: 3,
-                keyboardType: TextInputType.multiline,
-                controller: titleController2,
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Add more details here',
-                  hintStyle: TextStyle(
-                    fontFamily: 'DMSerifText',
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  style: TextStyle(fontFamily: 'DMSerifText'),
+                  //min line 1
+                  //max line 5
+                  //keyboardinput inputtextype multiline
+                  minLines: 1,
+                  maxLines: 3,
+                  keyboardType: TextInputType.multiline,
+                  controller: titleController2,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: 'Add more details here',
+                    hintStyle: TextStyle(
+                      fontFamily: 'DMSerifText',
                       color: Theme.of(context).colorScheme.secondary,
                     ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.inversePrimary,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: 10),
-              TextFormField(
-                style: TextStyle(fontFamily: 'DMSerifText'),
-                //min line 1
-                //max line 5
-                //keyboardinput inputtextype multiline
-                minLines: 4,
-                maxLines: 6,
-                keyboardType: TextInputType.multiline,
-                controller: descriptionController2,
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Add more details here',
-                  hintStyle: TextStyle(
-                    fontFamily: 'DMSerifText',
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
+                SizedBox(height: 10),
+                TextFormField(
+                  style: TextStyle(fontFamily: 'DMSerifText'),
+                  //min line 1
+                  //max line 5
+                  //keyboardinput inputtextype multiline
+                  minLines: 4,
+                  maxLines: 6,
+                  keyboardType: TextInputType.multiline,
+                  controller: descriptionController2,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: 'Add more details here',
+                    hintStyle: TextStyle(
+                      fontFamily: 'DMSerifText',
                       color: Theme.of(context).colorScheme.secondary,
                     ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.inversePrimary,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           actions: [
             //Cancel Button
@@ -256,7 +261,25 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                 ),
               ),
             ),
-
+            MyKeyButton(
+              text: 'Save',
+              onPressed: () {
+                ref
+                    .read(noteProvider.notifier)
+                    .updateNote(
+                      id: id,
+                      newText: titleController2.text.trim(),
+                      newSubText: descriptionController2.text.trim(),
+                      timeStamp: DateTime.now(),
+                    );
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              },
+              backgroundColor: Colors.green.shade800,
+              foregroundColor: Colors.white,
+            ),
+            /*
             //Save Button
             FilledButton(
               style: FilledButton.styleFrom(
@@ -285,6 +308,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                 style: TextStyle(fontFamily: 'DMSerifText', fontSize: 16),
               ),
             ),
+            */
           ],
         );
       },
@@ -302,25 +326,32 @@ class _NotesPageState extends ConsumerState<NotesPage> {
           content: Text("Are you sure you want to delete this note?"),
           actions: [
             //Cancel button
-            MaterialButton(
+            MyKeyButton(
+              text: 'Cancel',
               onPressed: () => Navigator.pop(context),
-              child: Text(
-                'Cancel',
-                style: TextStyle(fontFamily: 'DMSerifText'),
-              ),
+              backgroundColor: null,
+              foregroundColor: Theme.of(context).colorScheme.inversePrimary,
             ),
-
-            //yes button
-            MaterialButton(
+            MyKeyButton(
+              text: 'Delete',
               onPressed: () {
                 ref.read(noteProvider.notifier).deleteNote(id);
                 Navigator.pop(context);
               },
-              child: Text(
-                'Delete',
-                style: TextStyle(color: Colors.red, fontFamily: 'DMSerifText'),
-              ),
+              backgroundColor: Colors.red.shade400,
+              foregroundColor: Colors.white,
             ),
+            // //delete button
+            // MaterialButton(
+            //   onPressed: () {
+            //     ref.read(noteProvider.notifier).deleteNote(id);
+            //     Navigator.pop(context);
+            //   },
+            //   child: Text(
+            //     'Delete',
+            //     style: TextStyle(color: Colors.red, fontFamily: 'DMSerifText'),
+            //   ),
+            // ),
           ],
         );
       },

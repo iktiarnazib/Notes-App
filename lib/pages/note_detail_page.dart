@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:notesapp2/components/my_back_button.dart';
-import 'package:notesapp2/components/my_edit_button.dart';
+import 'package:notesapp2/components/my_key_button.dart';
+import 'package:notesapp2/components/my_style_button.dart';
 import 'package:notesapp2/models/note_database.dart';
 
 class NoteDetailPage extends ConsumerStatefulWidget {
@@ -38,73 +39,75 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
         return AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.surface,
           title: Text('Edit note', style: TextStyle(fontFamily: 'DMSerifText')),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                style: TextStyle(fontFamily: 'DMSerifText'),
-                //min line 1
-                //max line 5
-                //keyboardinput inputtextype multiline
-                minLines: 1,
-                maxLines: 3,
-                keyboardType: TextInputType.multiline,
-                controller: titleController,
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Add more details here',
-                  hintStyle: TextStyle(
-                    fontFamily: 'DMSerifText',
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  style: TextStyle(fontFamily: 'DMSerifText'),
+                  //min line 1
+                  //max line 5
+                  //keyboardinput inputtextype multiline
+                  minLines: 1,
+                  maxLines: 3,
+                  keyboardType: TextInputType.multiline,
+                  controller: titleController,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: 'Add more details here',
+                    hintStyle: TextStyle(
+                      fontFamily: 'DMSerifText',
                       color: Theme.of(context).colorScheme.secondary,
                     ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.inversePrimary,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: 10),
-              TextFormField(
-                style: TextStyle(fontFamily: 'DMSerifText'),
-                //min line 1
-                //max line 5
-                //keyboardinput inputtextype multiline
-                minLines: 4,
-                maxLines: 6,
-                keyboardType: TextInputType.multiline,
-                controller: descriptionController,
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Add more details here',
-                  hintStyle: TextStyle(
-                    fontFamily: 'DMSerifText',
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
+                SizedBox(height: 10),
+                TextFormField(
+                  style: TextStyle(fontFamily: 'DMSerifText'),
+                  //min line 1
+                  //max line 5
+                  //keyboardinput inputtextype multiline
+                  minLines: 4,
+                  maxLines: 6,
+                  keyboardType: TextInputType.multiline,
+                  controller: descriptionController,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: 'Add more details here',
+                    hintStyle: TextStyle(
+                      fontFamily: 'DMSerifText',
                       color: Theme.of(context).colorScheme.secondary,
                     ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.inversePrimary,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           actions: [
             //Cancel Button
@@ -121,14 +124,8 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
             ),
 
             //Save Button
-            FilledButton(
-              style: FilledButton.styleFrom(
-                backgroundColor: Colors.green.shade800,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6),
-                ),
-              ),
+            MyKeyButton(
+              text: 'Save',
               onPressed: () {
                 ref
                     .read(noteProvider.notifier)
@@ -145,11 +142,45 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
                   Navigator.pop(context);
                 }
               },
+              backgroundColor: Colors.green.shade800,
+              foregroundColor: Colors.white,
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-              child: Text(
-                'Save',
-                style: TextStyle(fontFamily: 'DMSerifText', fontSize: 16),
-              ),
+  //delete note
+  void onDeletePressed(int id) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          title: Text('Delete the note?'),
+          content: Text("Are you sure you want to delete this note?"),
+          actions: [
+            //Cancel button
+            MyKeyButton(
+              text: 'Cancel',
+              onPressed: () => Navigator.pop(context),
+              backgroundColor: null,
+              foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+            ),
+            MyKeyButton(
+              text: 'Delete',
+              onPressed: () {
+                ref.read(noteProvider.notifier).deleteNote(id);
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              },
+              backgroundColor: Colors.red.shade400,
+              foregroundColor: Colors.white,
             ),
           ],
         );
@@ -171,9 +202,17 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
           child: MyBackButton(),
         ),
         actions: [
+          MyStyleButton(
+            onTap: () => onDeletePressed(widget.id),
+            icon: Icons.delete,
+            iconColor: Colors.red.shade400,
+          ),
+          SizedBox(width: 5),
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
-            child: MyEditButton(
+            child: MyStyleButton(
+              icon: Icons.edit,
+              iconColor: Theme.of(context).colorScheme.inversePrimary,
               onTap: () => onEditPressed(
                 id: widget.id,
                 oldText: widget.title,
@@ -193,22 +232,16 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
                 widget.title,
                 style: TextStyle(fontSize: 30, fontFamily: 'DMSerifText'),
               ),
-              subtitle: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "${widget.timestamp.month}/"
-                    "${widget.timestamp.day}/"
-                    "${widget.timestamp.year} "
-                    "${widget.timestamp.hour}:"
-                    "${widget.timestamp.minute.toString().padLeft(2, "0")}",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      fontFamily: 'DMSerifText',
-                    ),
-                  ),
-                ],
+              subtitle: Text(
+                "${widget.timestamp.month}/"
+                "${widget.timestamp.day}/"
+                "${widget.timestamp.year} "
+                "${widget.timestamp.hour}:"
+                "${widget.timestamp.minute.toString().padLeft(2, "0")}",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.tertiary,
+                  fontFamily: 'DMSerifText',
+                ),
               ),
             ),
             Divider(thickness: 0.5),
