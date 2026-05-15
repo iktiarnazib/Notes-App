@@ -392,6 +392,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
         title: Text(
           'How are you feeling?',
           style: TextStyle(fontFamily: 'DMSerifText'),
+          overflow: TextOverflow.ellipsis,
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -431,7 +432,14 @@ class _NotesPageState extends ConsumerState<NotesPage> {
         actions: [
           MyKeyButton(
             text: 'Cancel',
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              setState(() {
+                feelingError = '';
+              });
+              if (mounted) {
+                Navigator.pop(context);
+              }
+            },
             backgroundColor: Theme.of(context).colorScheme.primary,
             foregroundColor: Theme.of(context).colorScheme.inversePrimary,
           ),
@@ -453,7 +461,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                 if (mounted) {
                   Navigator.pop(context);
                 }
-              } else {
+              } else if (feelingsController.text.isEmpty) {
                 setState(() {
                   feelingError = 'Please enter how you feel';
                 });
