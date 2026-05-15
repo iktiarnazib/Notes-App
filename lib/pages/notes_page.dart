@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:notesapp2/components/my_drawer.dart';
 import 'package:notesapp2/components/my_key_button.dart';
+import 'package:notesapp2/components/my_style_button.dart';
 import 'package:notesapp2/components/note_tile.dart';
 import 'package:notesapp2/models/note_database.dart';
 import 'package:notesapp2/pages/note_detail_page.dart';
@@ -21,6 +23,23 @@ class _NotesPageState extends ConsumerState<NotesPage> {
 
   TextEditingController descriptionController = TextEditingController();
   TextEditingController descriptionController2 = TextEditingController();
+  TextEditingController feelingsController = TextEditingController();
+
+  @override
+  void initState() {
+    initializeFeeling();
+    super.initState();
+  }
+
+  Future<void> initializeFeeling() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String savedFeelings = prefs.getString('feeling') ?? '';
+
+    setState(() {
+      feeling = savedFeelings;
+    });
+  }
+
   var errorText = '';
   //create a note
   void onActionButtonPressed() {
@@ -114,7 +133,8 @@ class _NotesPageState extends ConsumerState<NotesPage> {
 
               actions: [
                 //Cancel Button
-                MaterialButton(
+                MyKeyButton(
+                  text: 'Cancel',
                   onPressed: () {
                     setState(() {
                       errorText = '';
@@ -122,45 +142,35 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                     titleController.clear();
                     Navigator.pop(context);
                   },
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: "DMSerifText",
-                      fontStyle: FontStyle.normal,
-                    ),
-                  ),
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.inversePrimary,
                 ),
 
                 //Save Button
-                MaterialButton(
+                MyKeyButton(
+                  text: 'Save',
                   onPressed: () {
-                    if (titleController.text.trim().isEmpty) {
-                      setState(() {
-                        errorText = 'Please enter a text';
-                      });
-                    } else {
-                      ref
-                          .read(noteProvider.notifier)
-                          .addNote(
-                            noteText: titleController.text.trim(),
-                            noteSubText: descriptionController.text.trim(),
-                          );
-                      Navigator.pop(context);
-                      titleController.clear();
-                      descriptionController.clear();
-                      errorText = '';
-                    }
+                    () {
+                      if (titleController.text.trim().isEmpty) {
+                        setState(() {
+                          errorText = 'Please enter a text';
+                        });
+                      } else {
+                        ref
+                            .read(noteProvider.notifier)
+                            .addNote(
+                              noteText: titleController.text.trim(),
+                              noteSubText: descriptionController.text.trim(),
+                            );
+                        Navigator.pop(context);
+                        titleController.clear();
+                        descriptionController.clear();
+                        errorText = '';
+                      }
+                    };
                   },
-                  child: Text(
-                    'Save',
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 16,
-                      fontFamily: "DMSerifText",
-                      fontStyle: FontStyle.normal,
-                    ),
-                  ),
+                  backgroundColor: Colors.green.shade600,
+                  foregroundColor: Colors.white,
                 ),
               ],
             );
@@ -177,6 +187,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
     descriptionController2.selection = TextSelection.fromPosition(
       TextPosition(offset: descriptionController2.text.length),
     );
+
     showDialog(
       context: context,
       builder: (context) {
@@ -282,7 +293,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                   Navigator.pop(context);
                 }
               },
-              backgroundColor: Colors.green.shade800,
+              backgroundColor: Colors.green.shade600,
               foregroundColor: Colors.white,
             ),
             /*
@@ -370,6 +381,91 @@ class _NotesPageState extends ConsumerState<NotesPage> {
     );
   }
 
+  String feeling = '';
+  String feelingError = '';
+
+  void onUpdateFeelings(String oldFeeligns) {
+    feelingsController.text = oldFeeligns;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'How are you feeling?',
+          style: TextStyle(fontFamily: 'DMSerifText'),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              maxLength: 8,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+              controller: feelingsController,
+              style: TextStyle(fontFamily: 'DMSerifText'),
+              decoration: InputDecoration(
+                hintText: 'e.g Happy, Sad, Defeated',
+                hintStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                  ),
+                ),
+              ),
+            ),
+            if (feelingError.isNotEmpty)
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: 5),
+                  Text(feelingError, style: TextStyle(color: Colors.red)),
+                ],
+              ),
+          ],
+        ),
+        actions: [
+          MyKeyButton(
+            text: 'Cancel',
+            onPressed: () => Navigator.pop(context),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+          ),
+          MyKeyButton(
+            text: 'Save',
+            onPressed: () async {
+              if (feelingsController.text.isNotEmpty) {
+                final SharedPreferences prefs =
+                    await SharedPreferences.getInstance();
+                await prefs.setString('feeling', feelingsController.text);
+                setState(() {
+                  feeling = feelingsController.text;
+                });
+                setState(() {
+                  feelingError = '';
+                });
+                feelingsController.clear();
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              } else {
+                setState(() {
+                  feelingError = 'Please enter how you feel';
+                });
+              }
+            },
+            backgroundColor: Colors.green.shade600,
+            foregroundColor: Colors.white,
+          ),
+        ],
+      ),
+    );
+  }
+
   void onSwitchPressed() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (ref.read(themeProvider) == lightMode) {
@@ -437,13 +533,56 @@ class _NotesPageState extends ConsumerState<NotesPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 25.0),
-                  child: Text(
-                    'Notes',
-                    style: TextStyle(
-                      fontFamily: "DMSerifText",
-                      fontSize: 48,
-                      color: Theme.of(context).colorScheme.inversePrimary,
-                    ),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Notes',
+                        style: TextStyle(
+                          fontFamily: "DMSerifText",
+                          fontSize: 48,
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                        ),
+                      ),
+                      Expanded(child: SizedBox()),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 25.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+
+                          children: [
+                            Text(
+                              'Currently feeling:',
+                              style: TextStyle(
+                                fontFamily: 'DMSerifText',
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.inversePrimary,
+                                fontSize: 13,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () => onUpdateFeelings(feeling),
+                                  child: Text(
+                                    feeling.isEmpty
+                                        ? "'Tap to update'"
+                                        : feeling,
+                                    style: TextStyle(
+                                      fontFamily: 'DMSerifText',
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.inversePrimary,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Expanded(
