@@ -5,6 +5,8 @@ import 'package:notesapp2/components/my_key_button.dart';
 import 'package:notesapp2/components/note_tile.dart';
 import 'package:notesapp2/models/note_database.dart';
 import 'package:notesapp2/pages/note_detail_page.dart';
+import 'package:notesapp2/themes/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NotesPage extends ConsumerStatefulWidget {
   const NotesPage({super.key});
@@ -368,23 +370,39 @@ class _NotesPageState extends ConsumerState<NotesPage> {
     );
   }
 
+  void onSwitchPressed() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (ref.read(themeProvider) == lightMode) {
+      ref.read(themeProvider.notifier).state = darkMode;
+
+      await prefs.setBool('lightmode', false);
+    } else {
+      ref.read(themeProvider.notifier).state = lightMode;
+      await prefs.setBool('lightmode', true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     //read the notes
     final notes = ref.watch(noteProvider);
+    final themeMode = ref.watch(themeProvider);
+    bool themeDark = themeMode == darkMode;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        leading: Icon(Icons.sunny),
-        iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.inversePrimary,
-        ),
+        actions: [
+          Text(!themeDark ? 'Light Mode' : 'Dark Mode'),
+          Padding(
+            padding: const EdgeInsets.only(right: 12.0),
+            child: IconButton(
+              icon: !themeDark ? Icon(Icons.sunny) : Icon(Icons.dark_mode),
+              onPressed: onSwitchPressed,
+            ),
+          ),
+        ],
       ),
-      drawer: MyDrawer(
-        onTap: () {
-          Navigator.pop(context);
-        },
-      ),
+
       body: notes.isEmpty
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
