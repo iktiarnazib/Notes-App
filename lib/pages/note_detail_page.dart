@@ -319,7 +319,9 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
           label: Text(
             'Edit',
             style: TextStyle(
-              color: Theme.of(context).colorScheme.inversePrimary,
+              color: Colors.green.shade600,
+              fontWeight: FontWeight.w800,
+              fontFamily: 'DMSerifText',
             ),
           ),
           backgroundColor: Theme.of(context).colorScheme.primary,
