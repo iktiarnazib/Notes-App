@@ -442,6 +442,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                 final SharedPreferences prefs =
                     await SharedPreferences.getInstance();
                 await prefs.setString('feeling', feelingsController.text);
+
                 setState(() {
                   feeling = feelingsController.text;
                 });
@@ -547,19 +548,18 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 25.0),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
                               'Currently feeling:',
                               style: TextStyle(
                                 fontFamily: 'DMSerifText',
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.inversePrimary,
+                                color: Theme.of(context).colorScheme.tertiary,
                                 fontSize: 13,
                               ),
+                              overflow: TextOverflow.ellipsis,
                             ),
+
                             Row(
                               children: [
                                 GestureDetector(
@@ -573,8 +573,9 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                                       color: Theme.of(
                                         context,
                                       ).colorScheme.inversePrimary,
-                                      fontSize: 16,
+                                      fontSize: 18,
                                     ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
