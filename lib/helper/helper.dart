@@ -1,15 +1,18 @@
 class Helper {
-  static const String noteTitle = 'Welcome to ONLY NOTES.';
-  static const String lockTitle = 'No one read your notes.';
-  static const String celebrateTitle = 'You are all caught up!';
+  static const String noteTitle = 'Welcome to ONLY NOTES 🤗';
+
+  static const String lockTitle = 'Your notes stay private 🔒';
+
+  static const String celebrateTitle = 'You\’re all set! 🥳';
 
   static const String noteDescription =
-      'A private, aesthetic, secure notes app only for you, made for private note storing.';
-  static const String lockDescription =
-      'No one can read your notes except you, Making your notes extremely SECURE and PRIVATE.';
-  static const String celebrateDescription =
-      'Yeyy, you are now ready to use ONLY NOTES, press \'Get Started\' and write your memories!';
+      'A private, aesthetic and secure space for your THOUGHTS, MEMORIES and IDEAS.';
 
+  static const String lockDescription =
+      'Your notes are for your eyes only. SECURE, PROTECTED and ALWAYS PRIVATE.';
+
+  static const String celebrateDescription =
+      'Everything is ready. Press "Get Started" and begin writing YOUR MEMORIES!';
   static const String noteLottie = 'assets/lotties/note.json';
   static const String lockLottie = 'assets/lotties/lock.json';
   static const String celebrateLottie = 'assets/lotties/celebrate.json';
