@@ -45,6 +45,9 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
     super.dispose();
   }
 
+  //error message
+  String errorMessage = '';
+
   //update a note
   void onEditPressed({
     required int id,
@@ -56,118 +59,153 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          title: Text('Edit note', style: TextStyle(fontFamily: 'DMSerifText')),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  style: TextStyle(fontFamily: 'DMSerifText'),
-                  //min line 1
-                  //max line 5
-                  //keyboardinput inputtextype multiline
-                  minLines: 1,
-                  maxLines: 3,
-                  keyboardType: TextInputType.multiline,
-                  controller: titleController,
-                  autofocus: isTitle ? true : false,
-                  decoration: InputDecoration(
-                    hintText: 'Edit your title',
-                    hintStyle: TextStyle(
-                      fontFamily: 'DMSerifText',
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.secondary,
+        return StatefulBuilder(
+          builder: (BuildContext context, dialogSetState) {
+            return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              title: Text(
+                'Edit note',
+                style: TextStyle(fontFamily: 'DMSerifText'),
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextFormField(
+                      style: TextStyle(fontFamily: 'DMSerifText'),
+                      //min line 1
+                      //max line 5
+                      //keyboardinput inputtextype multiline
+                      minLines: 1,
+                      maxLines: 3,
+                      keyboardType: TextInputType.multiline,
+                      controller: titleController,
+                      autofocus: isTitle ? true : false,
+                      decoration: InputDecoration(
+                        hintText: 'Edit your title',
+                        hintStyle: TextStyle(
+                          fontFamily: 'DMSerifText',
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          ),
+                        ),
                       ),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.inversePrimary,
+                    SizedBox(height: 10),
+                    TextFormField(
+                      style: TextStyle(fontFamily: 'DMSerifText'),
+                      //min line 1
+                      //max line 5
+                      //keyboardinput inputtextype multiline
+                      minLines: 4,
+                      maxLines: 6,
+                      keyboardType: TextInputType.multiline,
+                      controller: descriptionController,
+                      autofocus: isTitle ? false : true,
+                      decoration: InputDecoration(
+                        hintText: 'Edit your description',
+                        hintStyle: TextStyle(
+                          fontFamily: 'DMSerifText',
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  style: TextStyle(fontFamily: 'DMSerifText'),
-                  //min line 1
-                  //max line 5
-                  //keyboardinput inputtextype multiline
-                  minLines: 4,
-                  maxLines: 6,
-                  keyboardType: TextInputType.multiline,
-                  controller: descriptionController,
-                  autofocus: isTitle ? false : true,
-                  decoration: InputDecoration(
-                    hintText: 'Edit your description',
-                    hintStyle: TextStyle(
-                      fontFamily: 'DMSerifText',
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.secondary,
+                    if (errorMessage.isNotEmpty)
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(height: 10),
+                          Text(
+                            errorMessage,
+                            style: TextStyle(
+                              fontFamily: 'DMSerifText',
+                              color: Colors.red,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.inversePrimary,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            //Cancel Button
-            MaterialButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  fontFamily: 'DMSerifText',
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+                  ],
                 ),
               ),
-            ),
+              actions: [
+                //Cancel Button
+                MaterialButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    dialogSetState(() {
+                      errorMessage = '';
+                    });
+                  },
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontFamily: 'DMSerifText',
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                    ),
+                  ),
+                ),
 
-            //Save Button
-            MyKeyButton(
-              text: 'Save',
-              onPressed: () {
-                ref
-                    .read(noteProvider.notifier)
-                    .updateNote(
-                      id: id,
-                      newText: titleController.text.trim(),
-                      newSubText: descriptionController.text.trim(),
-                      timeStamp: DateTime.now(),
-                    );
-                setState(() {
-                  currentTitle = titleController.text.trim();
-                  currentDescrition = descriptionController.text.trim();
-                  currentTime = DateTime.now();
-                });
-                if (mounted) {
-                  Navigator.pop(context);
-                }
-              },
-              backgroundColor: Colors.green.shade800,
-              foregroundColor: Colors.white,
-            ),
-          ],
+                //Save Button
+                MyKeyButton(
+                  text: 'Save',
+                  onPressed: () {
+                    if (titleController.text.trim().isEmpty) {
+                      dialogSetState(() {
+                        errorMessage = 'Please enter a title';
+                      });
+                    } else {
+                      ref
+                          .read(noteProvider.notifier)
+                          .updateNote(
+                            id: id,
+                            newText: titleController.text.trim(),
+                            newSubText: descriptionController.text.trim(),
+                            timeStamp: DateTime.now(),
+                          );
+                      setState(() {
+                        currentTitle = titleController.text.trim();
+                        currentDescrition = descriptionController.text.trim();
+                        currentTime = DateTime.now();
+                      });
+                      if (mounted) {
+                        Navigator.pop(context);
+                      }
+                      dialogSetState(() {
+                        errorMessage = '';
+                      });
+                    }
+                  },
+                  backgroundColor: Colors.green.shade800,
+                  foregroundColor: Colors.white,
+                ),
+              ],
+            );
+          },
         );
       },
     );
@@ -262,10 +300,22 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
                     oldDescription: currentDescrition,
                   );
                 },
-                child: Text(
-                  currentTitle,
-                  style: TextStyle(fontSize: 30, fontFamily: 'DMSerifText'),
-                ),
+                child: currentTitle.isEmpty
+                    ? Text(
+                        'Click here to add title',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'DMSerifText',
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      )
+                    : Text(
+                        currentTitle,
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'DMSerifText',
+                        ),
+                      ),
               ),
               subtitle: Text(
                 "${currentTime.month}/"

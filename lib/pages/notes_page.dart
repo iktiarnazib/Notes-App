@@ -49,6 +49,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
   }
 
   var errorText = '';
+  String errorMessage2 = '';
   //create a note
   void onActionButtonPressed() {
     showDialog(
@@ -137,7 +138,13 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           SizedBox(height: 10),
-                          Text(errorText, style: TextStyle(color: Colors.red)),
+                          Text(
+                            errorText,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontFamily: 'DMSerifText',
+                            ),
+                          ),
                         ],
                       ),
                   ],
@@ -168,7 +175,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                   onPressed: () {
                     if (titleController.text.trim().isEmpty) {
                       setState(() {
-                        errorText = 'Please enter a Title';
+                        errorText = 'Please enter a title';
                       });
                     } else {
                       ref
@@ -207,142 +214,177 @@ class _NotesPageState extends ConsumerState<NotesPage> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          title: Text('Edit note', style: TextStyle(fontFamily: 'DMSerifText')),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  style: TextStyle(fontFamily: 'DMSerifText'),
-                  //min line 1
-                  //max line 5
-                  //keyboardinput inputtextype multiline
-                  minLines: 1,
-                  maxLines: 3,
-                  keyboardType: TextInputType.multiline,
-                  controller: titleController2,
+        return StatefulBuilder(
+          builder: (BuildContext context, dialogSetState) {
+            return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              title: Text(
+                'Edit note',
+                style: TextStyle(fontFamily: 'DMSerifText'),
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextFormField(
+                      style: TextStyle(fontFamily: 'DMSerifText'),
+                      //min line 1
+                      //max line 5
+                      //keyboardinput inputtextype multiline
+                      minLines: 1,
+                      maxLines: 3,
+                      keyboardType: TextInputType.multiline,
+                      controller: titleController2,
 
-                  decoration: InputDecoration(
-                    hintText: 'Edit Your Title',
-                    hintStyle: TextStyle(
+                      decoration: InputDecoration(
+                        hintText: 'Edit Your Title',
+                        hintStyle: TextStyle(
+                          fontFamily: 'DMSerifText',
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      style: TextStyle(fontFamily: 'DMSerifText'),
+                      //min line 1
+                      //max line 5
+                      //keyboardinput inputtextype multiline
+                      minLines: 4,
+                      maxLines: 6,
+                      keyboardType: TextInputType.multiline,
+
+                      controller: descriptionController2,
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        hintText: 'Edit your description',
+                        hintStyle: TextStyle(
+                          fontFamily: 'DMSerifText',
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (errorMessage2.isNotEmpty)
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(height: 10),
+                          Text(
+                            errorMessage2,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontFamily: 'DMSerifText',
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+              actions: [
+                //Cancel Button
+                MaterialButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    dialogSetState(() {
+                      errorMessage2 = '';
+                    });
+                  },
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
                       fontFamily: 'DMSerifText',
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.inversePrimary,
-                      ),
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.inversePrimary,
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
-                TextFormField(
-                  style: TextStyle(fontFamily: 'DMSerifText'),
-                  //min line 1
-                  //max line 5
-                  //keyboardinput inputtextype multiline
-                  minLines: 4,
-                  maxLines: 6,
-                  keyboardType: TextInputType.multiline,
-
-                  controller: descriptionController2,
-                  autofocus: true,
-                  decoration: InputDecoration(
-                    hintText: 'Edit your description',
-                    hintStyle: TextStyle(
-                      fontFamily: 'DMSerifText',
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.inversePrimary,
-                      ),
-                    ),
+                MyKeyButton(
+                  text: 'Save',
+                  onPressed: () {
+                    if (titleController2.text.trim().isEmpty) {
+                      dialogSetState(() {
+                        errorMessage2 = 'Please enter a title';
+                      });
+                    } else {
+                      ref
+                          .read(noteProvider.notifier)
+                          .updateNote(
+                            id: id,
+                            newText: titleController2.text.trim(),
+                            newSubText: descriptionController2.text.trim(),
+                            timeStamp: DateTime.now(),
+                          );
+                      if (mounted) {
+                        Navigator.pop(context);
+                      }
+                      dialogSetState(() {
+                        errorMessage2 = '';
+                      });
+                    }
+                  },
+                  backgroundColor: Colors.green.shade600,
+                  foregroundColor: Colors.white,
+                ),
+                /*
+              //Save Button
+              FilledButton(
+                style: FilledButton.styleFrom(
+                  backgroundColor: Colors.green.shade800,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
                   ),
                 ),
+                onPressed: () {
+                  ref
+                      .read(noteProvider.notifier)
+                      .updateNote(
+                        id: id,
+                        newText: titleController2.text.trim(),
+                        newSubText: descriptionController2.text.trim(),
+                        timeStamp: DateTime.now(),
+                      );
+                  if (mounted) {
+                    Navigator.pop(context);
+                  }
+                },
+          
+                child: Text(
+                  'Save',
+                  style: TextStyle(fontFamily: 'DMSerifText', fontSize: 16),
+                ),
+              ),
+              */
               ],
-            ),
-          ),
-          actions: [
-            //Cancel Button
-            MaterialButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  fontFamily: 'DMSerifText',
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                ),
-              ),
-            ),
-            MyKeyButton(
-              text: 'Save',
-              onPressed: () {
-                ref
-                    .read(noteProvider.notifier)
-                    .updateNote(
-                      id: id,
-                      newText: titleController2.text.trim(),
-                      newSubText: descriptionController2.text.trim(),
-                      timeStamp: DateTime.now(),
-                    );
-                if (mounted) {
-                  Navigator.pop(context);
-                }
-              },
-              backgroundColor: Colors.green.shade600,
-              foregroundColor: Colors.white,
-            ),
-            /*
-            //Save Button
-            FilledButton(
-              style: FilledButton.styleFrom(
-                backgroundColor: Colors.green.shade800,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6),
-                ),
-              ),
-              onPressed: () {
-                ref
-                    .read(noteProvider.notifier)
-                    .updateNote(
-                      id: id,
-                      newText: titleController2.text.trim(),
-                      newSubText: descriptionController2.text.trim(),
-                      timeStamp: DateTime.now(),
-                    );
-                if (mounted) {
-                  Navigator.pop(context);
-                }
-              },
-
-              child: Text(
-                'Save',
-                style: TextStyle(fontFamily: 'DMSerifText', fontSize: 16),
-              ),
-            ),
-            */
-          ],
+            );
+          },
         );
       },
     );
@@ -359,9 +401,11 @@ class _NotesPageState extends ConsumerState<NotesPage> {
             'Delete the note?',
             style: TextStyle(fontFamily: 'DMSerifText'),
           ),
-          content: Text(
-            "Are you sure you want to delete this note?",
-            style: TextStyle(fontFamily: 'DMSerifText'),
+          content: SingleChildScrollView(
+            child: Text(
+              "Are you sure you want to delete this note?",
+              style: TextStyle(fontFamily: 'DMSerifText'),
+            ),
           ),
           actions: [
             //Cancel button
@@ -404,90 +448,105 @@ class _NotesPageState extends ConsumerState<NotesPage> {
     feelingsController.text = oldFeeligns;
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'How are you feeling?',
-          style: TextStyle(fontFamily: 'DMSerifText'),
-          overflow: TextOverflow.ellipsis,
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextFormField(
-              maxLength: 8,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              controller: feelingsController,
-              style: TextStyle(fontFamily: 'DMSerifText'),
-              decoration: InputDecoration(
-                hintText: 'e.g Happy, Sad, Defeated',
-                hintStyle: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                  ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, setState) {
+            return AlertDialog(
+              title: Text(
+                'How are you feeling?',
+                style: TextStyle(fontFamily: 'DMSerifText'),
+                overflow: TextOverflow.ellipsis,
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextFormField(
+                      maxLength: 8,
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                      controller: feelingsController,
+                      style: TextStyle(fontFamily: 'DMSerifText'),
+                      decoration: InputDecoration(
+                        hintText: 'e.g Happy, Sad, Defeated',
+                        hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (feelingError.isNotEmpty)
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(height: 5),
+                          Text(
+                            feelingError,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontFamily: 'DMSerifText',
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                  ],
                 ),
               ),
-            ),
-            if (feelingError.isNotEmpty)
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: 5),
-                  Text(feelingError, style: TextStyle(color: Colors.red)),
-                ],
-              ),
-          ],
-        ),
-        actions: [
-          MyKeyButton(
-            text: 'Cancel',
-            onPressed: () {
-              setState(() {
-                feelingError = '';
-              });
-              if (mounted) {
-                Navigator.pop(context);
-              }
-            },
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-          ),
-          MyKeyButton(
-            text: 'Save',
-            onPressed: () async {
-              if (feelingsController.text.isNotEmpty) {
-                final SharedPreferences prefs =
-                    await SharedPreferences.getInstance();
-                await prefs.setString('feeling', feelingsController.text);
+              actions: [
+                MyKeyButton(
+                  text: 'Cancel',
+                  onPressed: () {
+                    setState(() {
+                      feelingError = '';
+                    });
+                    if (mounted) {
+                      Navigator.pop(context);
+                    }
+                  },
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+                ),
+                MyKeyButton(
+                  text: 'Save',
+                  onPressed: () async {
+                    if (feelingsController.text.isNotEmpty) {
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setString('feeling', feelingsController.text);
 
-                setState(() {
-                  feeling = feelingsController.text;
-                });
-                setState(() {
-                  feelingError = '';
-                });
-                feelingsController.clear();
-                if (mounted) {
-                  Navigator.pop(context);
-                }
-              } else if (feelingsController.text.isEmpty) {
-                setState(() {
-                  feelingError = 'Please enter how you feel';
-                });
-              }
-            },
-            backgroundColor: Colors.green.shade600,
-            foregroundColor: Colors.white,
-          ),
-        ],
-      ),
+                      setState(() {
+                        feeling = feelingsController.text;
+                      });
+                      setState(() {
+                        feelingError = '';
+                      });
+                      feelingsController.clear();
+                      if (mounted) {
+                        Navigator.pop(context);
+                      }
+                    } else if (feelingsController.text.isEmpty) {
+                      setState(() {
+                        feelingError = 'Please enter how you feel';
+                      });
+                    }
+                  },
+                  backgroundColor: Colors.green.shade600,
+                  foregroundColor: Colors.white,
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 

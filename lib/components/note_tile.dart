@@ -35,17 +35,27 @@ class NoteTile extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                text,
-                style: TextStyle(
-                  fontFamily: 'DMSerifText',
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                  fontSize: 16,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+              text.isEmpty
+                  ? Text(
+                      'Enter a title',
+                      style: TextStyle(
+                        fontFamily: 'DMSerifText',
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: 16,
+                      ),
+                    )
+                  : Text(
+                      text,
+                      style: TextStyle(
+                        fontFamily: 'DMSerifText',
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                        fontSize: 16,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
               SizedBox(height: 2),
               Text(
                 subText.isEmpty ? 'Add a descripion' : subText,
