@@ -18,23 +18,121 @@ class OnboardingPage extends StatelessWidget {
           //horizontal scrollable pages
           PageView(
             children: [
-              Lottie.asset(
-                Helper.noteLottie,
-                height: 200,
-                fit: BoxFit.contain,
-                repeat: false,
+              Column(
+                children: [
+                  //lottie
+                  Lottie.asset(
+                    Helper.noteLottie,
+                    height: MediaQuery.of(context).size.height * .50,
+                    fit: BoxFit.contain,
+                    repeat: false,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Text(
+                      Helper.noteTitle,
+                      style: TextStyle(
+                        fontFamily: 'DMSerifText',
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                        fontSize: 25,
+                      ),
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(height: TSizes.spaceBtwItems),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      Helper.noteDescription,
+                      style: TextStyle(
+                        fontFamily: 'DMSerifText',
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                        fontSize: 16,
+                      ),
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
               ),
-              Lottie.asset(
-                Helper.lockLottie,
-                height: 200,
-                fit: BoxFit.contain,
-                repeat: false,
+              Column(
+                children: [
+                  Lottie.asset(
+                    Helper.lockLottie,
+                    height: MediaQuery.of(context).size.height * .50,
+                    fit: BoxFit.contain,
+                    repeat: false,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Text(
+                      Helper.lockTitle,
+                      style: TextStyle(
+                        fontFamily: 'DMSerifText',
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                        fontSize: 25,
+                      ),
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(height: TSizes.spaceBtwItems),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      Helper.lockDescription,
+                      style: TextStyle(
+                        fontFamily: 'DMSerifText',
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                        fontSize: 16,
+                      ),
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
               ),
-              Lottie.asset(
-                Helper.celebrateLottie,
-                height: 200,
-                fit: BoxFit.contain,
-                repeat: false,
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Lottie.asset(
+                      Helper.celebrateLottie,
+                      height: MediaQuery.of(context).size.height * 0.42,
+                      fit: BoxFit.contain,
+                      repeat: false,
+                    ),
+                  ),
+                  SizedBox(height: 52),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Text(
+                      Helper.celebrateTitle,
+                      style: TextStyle(
+                        fontFamily: 'DMSerifText',
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                        fontSize: 25,
+                      ),
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(height: TSizes.spaceBtwItems),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      Helper.celebrateDescription,
+                      style: TextStyle(
+                        fontFamily: 'DMSerifText',
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                        fontSize: 16,
+                      ),
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
