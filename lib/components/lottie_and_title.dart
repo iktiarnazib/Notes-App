@@ -15,44 +15,49 @@ class LottieAndTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(height: 30),
-        //lottie
-        Lottie.asset(
-          lottieLocation,
-          height: MediaQuery.of(context).size.height * .65,
-          fit: BoxFit.contain,
-          repeat: false,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Text(
-            title,
-            style: TextStyle(
-              fontFamily: 'DMSerifText',
-              color: Theme.of(context).colorScheme.inversePrimary,
-              fontSize: 25,
+    return SafeArea(
+      child: Column(
+        children: [
+          SizedBox(height: 30),
+          //lottie
+          Expanded(
+            child: Lottie.asset(
+              lottieLocation,
+              height: MediaQuery.of(context).size.height * .65,
+              fit: BoxFit.contain,
+              repeat: false,
             ),
-            softWrap: true,
-            textAlign: TextAlign.center,
           ),
-        ),
-        SizedBox(height: TSizes.spaceBtwItems),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            description,
-            style: TextStyle(
-              fontFamily: 'DMSerifText',
-              color: Theme.of(context).colorScheme.inversePrimary,
-              fontSize: 16,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontFamily: 'DMSerifText',
+                color: Theme.of(context).colorScheme.inversePrimary,
+                fontSize: 25,
+              ),
+              softWrap: true,
+              textAlign: TextAlign.center,
             ),
-            softWrap: true,
-            textAlign: TextAlign.center,
           ),
-        ),
-      ],
+          SizedBox(height: TSizes.spaceBtwItems),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              description,
+              style: TextStyle(
+                fontFamily: 'DMSerifText',
+                color: Theme.of(context).colorScheme.inversePrimary,
+                fontSize: 16,
+              ),
+              softWrap: true,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(height: 150),
+        ],
+      ),
     );
   }
 }

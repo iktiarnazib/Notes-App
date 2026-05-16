@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,26 +8,30 @@ class OnboardingNotifier extends StateNotifier<int> {
 
   //page controller
   final pageContoller = PageController();
-  //current page index
-  int currentPageIndex = 0;
 
   //on page scroll update
   void updatePageIndicator(int index) {
-    currentPageIndex = index;
+    state = index;
   }
 
   //on dot click update
   void onDotClickUpdate(int index) {
-    currentPageIndex = index;
+    state = index;
+    pageContoller.jumpToPage(state);
   }
 
   //on nextpage update dot
   void nextPage() {
-    currentPageIndex++;
+    if (state == 2) {
+    } else {
+      state++;
+      pageContoller.jumpToPage(state);
+    }
   }
 
   //on skip click
   void onSkipClick() {
-    currentPageIndex = 2;
+    state = 2;
+    pageContoller.jumpToPage(state);
   }
 }
