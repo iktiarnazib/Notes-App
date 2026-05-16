@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:notesapp2/components/lottie_and_title.dart';
-import 'package:notesapp2/components/my_key_button.dart';
-import 'package:notesapp2/components/my_style_button.dart';
 import 'package:notesapp2/helper/helper.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class OnboardingPage extends StatelessWidget {
+class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
 
+  @override
+  State<OnboardingPage> createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends State<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
