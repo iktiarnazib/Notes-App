@@ -5,6 +5,7 @@ import 'package:notesapp2/components/lottie_and_title.dart';
 import 'package:notesapp2/helper/helper.dart';
 import 'package:notesapp2/pages/notes_page.dart';
 import 'package:notesapp2/provider/onboarding_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingPage extends ConsumerStatefulWidget {
@@ -90,7 +91,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             right: 30,
             bottom: 45,
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (next == 2) {
                   Navigator.pushReplacement(
                     context,
@@ -100,6 +101,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                       },
                     ),
                   );
+                  final SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await prefs.setBool('onboarding', false);
                 } else {
                   controller.nextPage();
                 }
