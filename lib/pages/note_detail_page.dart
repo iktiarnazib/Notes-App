@@ -218,6 +218,8 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
         title: Text(
           'Note Details',
           style: TextStyle(fontFamily: 'DMSerifText'),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
