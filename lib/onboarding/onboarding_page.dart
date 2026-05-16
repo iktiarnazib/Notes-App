@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:notesapp2/components/lottie_and_title.dart';
 import 'package:notesapp2/helper/helper.dart';
+import 'package:notesapp2/pages/notes_page.dart';
 import 'package:notesapp2/provider/onboarding_provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -16,33 +17,37 @@ class OnboardingPage extends ConsumerStatefulWidget {
 class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
-    final controller = ref.watch(onboardingProvider.notifier);
+    final controller = ref.read(onboardingProvider.notifier);
+    final next = ref.watch(onboardingProvider);
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
 
       body: Stack(
         children: [
           //horizontal scrollable pages
-          PageView(
-            controller: controller.pageContoller,
-            onPageChanged: controller.updatePageIndicator,
-            children: [
-              LottieAndTitle(
-                lottieLocation: Helper.noteLottie,
-                title: Helper.noteTitle,
-                description: Helper.noteDescription,
-              ),
-              LottieAndTitle(
-                lottieLocation: Helper.lockLottie,
-                title: Helper.lockTitle,
-                description: Helper.lockDescription,
-              ),
-              LottieAndTitle(
-                lottieLocation: Helper.celebrateLottie,
-                title: Helper.celebrateTitle,
-                description: Helper.celebrateDescription,
-              ),
-            ],
+          Positioned.fill(
+            child: PageView(
+              controller: controller.pageContoller,
+              onPageChanged: controller.updatePageIndicator,
+              children: [
+                LottieAndTitle(
+                  lottieLocation: Helper.noteLottie,
+                  title: Helper.noteTitle,
+                  description: Helper.noteDescription,
+                ),
+                LottieAndTitle(
+                  lottieLocation: Helper.lockLottie,
+                  title: Helper.lockTitle,
+                  description: Helper.lockDescription,
+                ),
+                LottieAndTitle(
+                  lottieLocation: Helper.celebrateLottie,
+                  title: Helper.celebrateTitle,
+                  description: Helper.celebrateDescription,
+                ),
+              ],
+            ),
           ),
 
           //skip button
@@ -50,7 +55,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             top: 50,
             right: 10,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                controller.onSkipClick();
+              },
               style: TextButton.styleFrom(surfaceTintColor: Colors.red),
               child: Text(
                 'Skip',
@@ -84,7 +91,18 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
             bottom: 45,
             child: ElevatedButton(
               onPressed: () {
-                controller.nextPage();
+                if (next == 2) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return NotesPage();
+                      },
+                    ),
+                  );
+                } else {
+                  controller.nextPage();
+                }
               },
               style: FilledButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.primary,
@@ -93,7 +111,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Next'),
+                  next == 2 ? Text('Get Started') : Text('Next'),
                   SizedBox(width: 4),
                   Icon(
                     Iconsax.arrow_right_3,
