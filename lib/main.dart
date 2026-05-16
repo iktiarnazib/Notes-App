@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:notesapp2/onboarding/onboarding_page.dart';
 import 'package:notesapp2/pages/intro_page.dart';
 import 'package:notesapp2/pages/notes_page.dart';
-import 'package:notesapp2/pages/settings_page.dart';
 import 'package:notesapp2/themes/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,13 +38,12 @@ class _MyAppState extends ConsumerState<MyApp> {
     final themeMode = ref.watch(themeProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: widget.initialized ? const OnboardingPage() : const NotesPage(),
-
+      // home: widget.initialized ? const OnboardingPage() : const NotesPage(),
+      home: OnboardingPage(),
       theme: themeMode,
       color: Theme.of(context).colorScheme.surface,
       routes: {
         'notesPage': (context) => const NotesPage(),
-        'settingsPage': (context) => const SettingsPage(),
         'introPage': (context) => const IntroPage(),
       },
     );
