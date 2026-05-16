@@ -29,6 +29,16 @@ class _NotesPageState extends ConsumerState<NotesPage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    titleController.dispose();
+    titleController2.dispose();
+    descriptionController.dispose();
+    descriptionController2.dispose();
+    feelingsController.dispose();
+    super.dispose();
+  }
+
   Future<void> initializeFeeling() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String savedFeelings = prefs.getString('feeling') ?? '';

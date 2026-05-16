@@ -38,6 +38,13 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
+
   //update a note
   void onEditPressed({
     required int id,
