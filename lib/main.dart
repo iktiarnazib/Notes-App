@@ -41,7 +41,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       debugShowCheckedModeBanner: false,
       // home: widget.initialized ? const NotesPage() : const IntroPage(),
       home: OnboardingPage(),
-      theme: themeMode,
+      theme: lightMode,
       color: Theme.of(context).colorScheme.surface,
       routes: {
         'notesPage': (context) => const NotesPage(),
