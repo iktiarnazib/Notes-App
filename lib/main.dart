@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  final bool initialized = prefs.getBool('initialized') ?? false;
+  final bool initialized = prefs.getBool('onboarding') ?? true;
   final bool isLightMode = prefs.getBool('lightmode') ?? true;
 
   //initialize isar database
@@ -39,8 +39,8 @@ class _MyAppState extends ConsumerState<MyApp> {
     final themeMode = ref.watch(themeProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: widget.initialized ? const NotesPage() : const IntroPage(),
-      home: OnboardingPage(),
+      home: widget.initialized ? const OnboardingPage() : const NotesPage(),
+
       theme: themeMode,
       color: Theme.of(context).colorScheme.surface,
       routes: {
