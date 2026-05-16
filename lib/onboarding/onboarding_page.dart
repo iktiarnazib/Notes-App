@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:notesapp2/components/lottie_and_title.dart';
 import 'package:notesapp2/components/my_key_button.dart';
 import 'package:notesapp2/components/my_style_button.dart';
@@ -72,7 +73,7 @@ class OnboardingPage extends StatelessWidget {
           Positioned(
             right: 30,
             bottom: 45,
-            child: FilledButton(
+            child: ElevatedButton(
               onPressed: () {},
               style: FilledButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.primary,
@@ -80,7 +81,14 @@ class OnboardingPage extends StatelessWidget {
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: [Text('Next'), Icon(Icons.arrow_right)],
+                children: [
+                  Text('Next'),
+                  SizedBox(width: 4),
+                  Icon(
+                    Iconsax.arrow_right_3,
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                  ),
+                ],
               ),
             ),
           ),
