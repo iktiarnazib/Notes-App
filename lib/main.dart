@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:notesapp2/onboarding/onboarding_page.dart';
 import 'package:notesapp2/pages/intro_page.dart';
 import 'package:notesapp2/pages/notes_page.dart';
 import 'package:notesapp2/pages/settings_page.dart';
@@ -38,7 +39,8 @@ class _MyAppState extends ConsumerState<MyApp> {
     final themeMode = ref.watch(themeProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: widget.initialized ? const NotesPage() : const IntroPage(),
+      // home: widget.initialized ? const NotesPage() : const IntroPage(),
+      home: OnboardingPage(),
       theme: themeMode,
       color: Theme.of(context).colorScheme.surface,
       routes: {
