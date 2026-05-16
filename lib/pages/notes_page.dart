@@ -572,7 +572,13 @@ class _NotesPageState extends ConsumerState<NotesPage> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         actions: [
-          Text(!themeDark ? 'Light Mode' : 'Dark Mode'),
+          Text(
+            !themeDark ? 'Light Mode' : 'Dark Mode',
+            style: TextStyle(
+              fontFamily: 'DMSerifText',
+              color: Theme.of(context).colorScheme.inversePrimary,
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
             child: IconButton(
