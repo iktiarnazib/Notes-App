@@ -520,24 +520,71 @@ class _NotesPageState extends ConsumerState<NotesPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 25.0),
-                  child: Text(
-                    'Notes',
-                    style: TextStyle(
-                      fontFamily: "DMSerifText",
-                      fontSize: 48,
-                      color: Theme.of(context).colorScheme.inversePrimary,
+                  child: SizedBox(
+                    height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Notes',
+                          style: TextStyle(
+                            fontFamily: "DMSerifText",
+                            fontSize: 48,
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Expanded(child: SizedBox()),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 25.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                'Currently feeling:',
+                                style: TextStyle(
+                                  fontFamily: 'DMSerifText',
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                  fontSize: 13,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => onUpdateFeelings(feeling),
+                                    child: Text(
+                                      feeling.isEmpty
+                                          ? "'Tap to update'"
+                                          : feeling,
+                                      style: TextStyle(
+                                        fontFamily: 'DMSerifText',
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.inversePrimary,
+                                        fontSize: 18,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 Expanded(
                   child: Center(
                     child: Text(
-                      'Try adding a note...',
-                      style: TextStyle(
-                        fontFamily: "DMSerifText",
-                        fontSize: 16,
-                        color: Theme.of(context).colorScheme.inversePrimary,
-                      ),
+                      'No notes, try adding a note',
+                      style: TextStyle(fontFamily: 'DMSerifText', fontSize: 15),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
@@ -560,6 +607,8 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                             fontSize: 48,
                             color: Theme.of(context).colorScheme.inversePrimary,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         Expanded(child: SizedBox()),
                         Padding(
