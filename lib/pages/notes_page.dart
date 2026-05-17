@@ -450,7 +450,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
       context: context,
       builder: (context) {
         return StatefulBuilder(
-          builder: (BuildContext context, setState) {
+          builder: (BuildContext context, dialogSetState) {
             return AlertDialog(
               title: Text(
                 'How are you feeling?',
@@ -505,7 +505,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                 MyKeyButton(
                   text: 'Cancel',
                   onPressed: () {
-                    setState(() {
+                    dialogSetState(() {
                       feelingError = '';
                     });
                     if (mounted) {
@@ -526,7 +526,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                       setState(() {
                         feeling = feelingsController.text;
                       });
-                      setState(() {
+                      dialogSetState(() {
                         feelingError = '';
                       });
                       feelingsController.clear();
@@ -534,7 +534,7 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                         Navigator.pop(context);
                       }
                     } else if (feelingsController.text.isEmpty) {
-                      setState(() {
+                      dialogSetState(() {
                         feelingError = 'Please enter how you feel';
                       });
                     }
@@ -670,12 +670,11 @@ class _NotesPageState extends ConsumerState<NotesPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 25.0),
-                  child: SizedBox(
-                    height: 60,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Text(
                           'Notes',
                           style: TextStyle(
                             fontFamily: "DMSerifText",
@@ -685,48 +684,40 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        Expanded(child: SizedBox()),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 25.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                'Currently feeling:',
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 25.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              'Currently feeling:',
+                              style: TextStyle(
+                                fontFamily: 'DMSerifText',
+                                color: Theme.of(context).colorScheme.tertiary,
+                                fontSize: 13,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            GestureDetector(
+                              onTap: () => onUpdateFeelings(feeling),
+                              child: Text(
+                                feeling.isEmpty ? "'Tap to update'" : feeling,
                                 style: TextStyle(
                                   fontFamily: 'DMSerifText',
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  fontSize: 13,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.inversePrimary,
+                                  fontSize: 20,
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
-
-                              Row(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () => onUpdateFeelings(feeling),
-                                    child: Text(
-                                      feeling.isEmpty
-                                          ? "'Tap to update'"
-                                          : feeling,
-                                      style: TextStyle(
-                                        fontFamily: 'DMSerifText',
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.inversePrimary,
-                                        fontSize: 20,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 Expanded(
