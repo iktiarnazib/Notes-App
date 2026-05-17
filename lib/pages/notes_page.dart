@@ -595,12 +595,11 @@ class _NotesPageState extends ConsumerState<NotesPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 25.0),
-                  child: SizedBox(
-                    height: 60,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Text(
                           'Notes',
                           style: TextStyle(
                             fontFamily: "DMSerifText",
@@ -610,48 +609,48 @@ class _NotesPageState extends ConsumerState<NotesPage> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        Expanded(child: SizedBox()),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 25.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                'Currently feeling:',
-                                style: TextStyle(
-                                  fontFamily: 'DMSerifText',
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  fontSize: 13,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                      ),
 
-                              Row(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () => onUpdateFeelings(feeling),
-                                    child: Text(
-                                      feeling.isEmpty
-                                          ? "'Tap to update'"
-                                          : feeling,
-                                      style: TextStyle(
-                                        fontFamily: 'DMSerifText',
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.inversePrimary,
-                                        fontSize: 18,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
+                      Padding(
+                        padding: const EdgeInsets.only(right: 25.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              'Currently feeling:',
+                              style: TextStyle(
+                                fontFamily: 'DMSerifText',
+                                color: Theme.of(context).colorScheme.tertiary,
+                                fontSize: 13,
                               ),
-                            ],
-                          ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () => onUpdateFeelings(feeling),
+                                  child: Text(
+                                    feeling.isEmpty
+                                        ? "'Tap to update'"
+                                        : feeling,
+                                    style: TextStyle(
+                                      fontFamily: 'DMSerifText',
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.inversePrimary,
+                                      fontSize: 18,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 Expanded(
